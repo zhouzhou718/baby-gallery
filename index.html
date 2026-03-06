@@ -12,6 +12,9 @@ const CONFIG = {
   cloudName:    "YOUR_CLOUD_NAME",
   uploadPreset: "YOUR_UPLOAD_PRESET",
   indexFolder:  "baby_gallery",
+  githubUser:   "zhouzhou718",
+  githubRepo:   "baby-gallery",
+  githubToken:  "YOUR_GITHUB_TOKEN", // github.com/settings/tokens → repo权限
 };
 </script>
 <style>
@@ -260,9 +263,16 @@ function showToast(msg,dur=2800){const t=document.getElementById("toast");t.text
 // CONFIG
 // ══════════════════════════════════════
 function getConfig(){
-  if(typeof CONFIG!=="undefined"&&CONFIG.cloudName!=="YOUR_CLOUD_NAME"&&CONFIG.uploadPreset!=="YOUR_UPLOAD_PRESET")return CONFIG;
   const saved=JSON.parse(localStorage.getItem("cl_config")||"{}");
-  return{cloudName:saved.cloudName||"",uploadPreset:saved.uploadPreset||"",indexFolder:saved.indexFolder||"baby_gallery"};
+  const hardcoded = typeof CONFIG!=="undefined" ? CONFIG : {};
+  return{
+    cloudName:    saved.cloudName    || hardcoded.cloudName    || "",
+    uploadPreset: saved.uploadPreset || hardcoded.uploadPreset || "",
+    indexFolder:  saved.indexFolder  || hardcoded.indexFolder  || "baby_gallery",
+    githubUser:   saved.githubUser   || hardcoded.githubUser   || "zhouzhou718",
+    githubRepo:   saved.githubRepo   || hardcoded.githubRepo   || "baby-gallery",
+    githubToken:  saved.githubToken  || hardcoded.githubToken  || "",
+  };
 }
 function isConfigured(){const c=getConfig();return c.cloudName&&c.cloudName!=="YOUR_CLOUD_NAME"&&c.uploadPreset&&c.uploadPreset!=="YOUR_UPLOAD_PRESET";}
 
@@ -288,7 +298,7 @@ let state={
   bulkProgress:0,
   fillDate:new Date().toISOString().split("T")[0],
   // setup form temps
-  setupCloud:"",setupPreset:"",
+  setupCloud:"",setupPreset:"",setupGhToken:"",
   setupRanges: CLASS_DEFS.map(c=>({...c,start:DEFAULT_RANGES[c.startKey]||"",end:DEFAULT_RANGES[c.endKey]||""})),
 };
 
@@ -299,7 +309,7 @@ function setState(patch){Object.assign(state,patch);render();}
 // ══════════════════════════════════════
 async function loadPhotos(){
   setState({loading:true});
-  // Show cached photos immediately while fetching from Cloudinary
+  // 1. Show local cache immediately
   try{
     const cached=JSON.parse(localStorage.getItem("gallery_photos")||"[]");
     if(cached.length){
@@ -307,10 +317,10 @@ async function loadPhotos(){
       setState({photos:cached,loading:false,activeClass:resolveActiveClass(cached)});
     }
   }catch{}
-  // Fetch fresh list from Cloudinary
+  // 2. Fetch from GitHub JSON (source of truth, works on all devices)
   try{
-    const fresh=await fetchFromCloudinary();
-    if(fresh.length){
+    const fresh=await fetchFromGitHub();
+    if(fresh&&fresh.length){
       fresh.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
       saveLocalIndex(fresh);
       setState({photos:fresh,loading:false,activeClass:resolveActiveClass(fresh)});
@@ -318,7 +328,7 @@ async function loadPhotos(){
       setState({loading:false});
     }
   }catch(e){
-    console.warn("Cloudinary sync failed:",e);
+    console.warn("GitHub sync failed:",e);
     setState({loading:false});
   }
 }
@@ -332,34 +342,46 @@ function resolveActiveClass(photos){
   return activeClass;
 }
 
-async function fetchFromCloudinary(){
+// ── GitHub JSON index ──────────────────────────────
+const GH_API = "https://api.github.com";
+
+async function fetchFromGitHub(){
   const cfg=getConfig();
-  // Use Cloudinary's list endpoint — requires enabling "Resource list" in settings
-  // Falls back to empty if not enabled
-  const url=`https://res.cloudinary.com/${cfg.cloudName}/image/list/${cfg.indexFolder}.json`;
-  const r=await fetch(url+"?_="+ Date.now());
-  if(!r.ok) throw new Error("list failed: "+r.status);
-  const data=await r.json();
-  const resources=data.resources||[];
-  return resources.map(res=>{
-    // Parse context: date=2024-09-01|note=xxx
-    let date="",note="";
-    const ctx=res.context?.custom||{};
-    if(ctx.date) date=ctx.date;
-    if(ctx.note) note=decodeURIComponent(ctx.note);
-    // Fallback: try to parse date from public_id or uploaded_at
-    if(!date&&res.uploaded_at) date=res.uploaded_at.slice(0,10);
-    return{id:res.public_id,date,note,url:res.secure_url,publicId:res.public_id};
-  }).filter(p=>p.date);
+  const url=`https://zhouzhou718.github.io/baby-gallery/photos.json?_=${Date.now()}`;
+  const r=await fetch(url);
+  if(!r.ok) return [];
+  return await r.json();
 }
 
-function saveLocalIndex(photos){localStorage.setItem("gallery_photos",JSON.stringify(photos));}
+async function saveIndexToGitHub(photos){
+  const cfg=getConfig();
+  if(!cfg.githubToken||cfg.githubToken==="YOUR_GITHUB_TOKEN") return;
+  const path="photos.json";
+  const apiUrl=`${GH_API}/repos/zhouzhou718/baby-gallery/contents/${path}`;
+  // Get current SHA (needed for update)
+  let sha="";
+  try{
+    const r=await fetch(apiUrl,{headers:{Authorization:`token ${cfg.githubToken}`,"Accept":"application/vnd.github.v3+json"}});
+    if(r.ok){const d=await r.json();sha=d.sha||"";}
+  }catch{}
+  // Push updated JSON
+  const body={message:"update photos index",content:btoa(unescape(encodeURIComponent(JSON.stringify(photos,null,2))))};
+  if(sha) body.sha=sha;
+  await fetch(apiUrl,{method:"PUT",headers:{Authorization:`token ${cfg.githubToken}`,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"},body:JSON.stringify(body)});
+}
+
+function saveLocalIndex(photos){
+  localStorage.setItem("gallery_photos",JSON.stringify(photos));
+  // Async push to GitHub (don't await, fire and forget)
+  saveIndexToGitHub(photos).catch(e=>console.warn("GitHub save failed:",e));
+}
 
 async function uploadPhoto(file,date,note){
   const cfg=getConfig();
   const fd=new FormData();
-  fd.append("file",file);fd.append("upload_preset",cfg.uploadPreset);
-  fd.append("folder",cfg.indexFolder);
+  fd.append("file",file);
+  fd.append("upload_preset",cfg.uploadPreset);
+  fd.append("tags","baby_gallery");  // tag for listing
   fd.append("context",`date=${date}|note=${encodeURIComponent(note||"")}`);
   const r=await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/image/upload`,{method:"POST",body:fd});
   if(!r.ok){const err=await r.text();throw new Error("上传失败: "+r.status+" "+err);}
@@ -392,6 +414,9 @@ function renderSetup(){
     <div class="field"><label>Cloud Name</label><input id="inp-cloud" type="text" placeholder="例如: mycloud123" value="${state.setupCloud}"><div class="hint">Dashboard 首页可以看到</div></div>
     <div class="field"><label>Upload Preset（Unsigned）</label><input id="inp-preset" type="text" placeholder="例如: baby_upload" value="${state.setupPreset}"><div class="hint">Settings → Upload → Upload Presets → 新建 Unsigned</div></div>
 
+    <div class="sec-title">🔑 GitHub Token（多设备同步）</div>
+    <div class="field"><label>Personal Access Token</label><input id="inp-ghtoken" type="password" placeholder="ghp_xxxxxxxxxxxx" value="${state.setupGhToken||''}"><div class="hint"><a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--rose)">点这里生成 Token</a> → 勾选 repo 权限 → No expiration</div></div>
+
     <div class="sec-title">🎓 幼儿园班级时间段</div>
     <p style="font-size:.82rem;color:var(--text2);line-height:1.6;margin-bottom:12px;width:100%">填入每个班级的起止日期，照片将自动归类到对应班级。可以只填已有照片的班级。</p>
 
@@ -421,6 +446,8 @@ function renderSetup(){
 function bindSetup(){
   document.getElementById("inp-cloud").oninput=e=>state.setupCloud=e.target.value.trim();
   document.getElementById("inp-preset").oninput=e=>state.setupPreset=e.target.value.trim();
+  const ghToken=document.getElementById("inp-ghtoken");
+  if(ghToken) ghToken.oninput=e=>state.setupGhToken=e.target.value.trim();
   CLASS_DEFS.forEach((c,i)=>{
     const s=document.getElementById(`cls-${c.key}-start`);
     const e2=document.getElementById(`cls-${c.key}-end`);
@@ -433,7 +460,8 @@ window.saveSetup=function(){
   const cloud=document.getElementById("inp-cloud").value.trim();
   const preset=document.getElementById("inp-preset").value.trim();
   if(!cloud||!preset){showToast("请填写 Cloud Name 和 Upload Preset");return;}
-  localStorage.setItem("cl_config",JSON.stringify({cloudName:cloud,uploadPreset:preset,indexFolder:"baby_gallery"}));
+  const ghToken=document.getElementById("inp-ghtoken").value.trim();
+  localStorage.setItem("cl_config",JSON.stringify({cloudName:cloud,uploadPreset:preset,indexFolder:"baby_gallery",githubToken:ghToken}));
   // save class ranges
   const ranges=CLASS_DEFS.map((c,i)=>{
     const start=document.getElementById(`cls-${c.key}-start`).value;
