@@ -607,21 +607,30 @@ function bindGallery(){
 
 async function handleSingleFiles(e){
   const files=Array.from(e.target.files).filter(f=>f.type.startsWith("image/"));
-  const items=await Promise.all(files.map(async f=>({file:f,dataUrl:await toDataUrl(f)})));
-  setState({previews:[...state.previews,...items]});e.target.value="";
+  const items=await Promise.all(files.map(async f=>{
+    const[dataUrl,{date,src}]=await Promise.all([toDataUrl(f),smartDate(f)]);
+    return{file:f,dataUrl,detectedDate:date,detectedSrc:src};
+  }));
+  if(items.length===1&&items[0].detectedDate) state.formDate=items[0].detectedDate;
+  setState({previews:[...state.previews,...items]});
+  e.target.value="";
 }
 
 async function handleSingleSave(){
-  if(!state.formDate){showToast("请选择日期 📅");return;}
   if(!state.previews.length){showToast("请先选择照片 📷");return;}
   setState({saving:true});
   const newPhotos=[];
   try{
-    for(const pv of state.previews){const photo=await uploadPhoto(pv.file,state.formDate,state.formNote);newPhotos.push(photo);}
+    for(const pv of state.previews){
+      const date=pv.detectedDate||state.formDate;
+      if(!date){showToast("请填写日期 📅");setState({saving:false});return;}
+      const photo=await uploadPhoto(pv.file,date,state.formNote);
+      newPhotos.push(photo);
+    }
     const all=[...state.photos,...newPhotos].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
     saveLocalIndex(all);
     showToast(`🎉 已上传 ${newPhotos.length} 张！`);
-    const cls=getClassForDate(state.formDate);
+    const cls=getClassForDate(newPhotos[0]?.date||state.formDate);
     setState({photos:all,activeClass:cls?cls.key:state.activeClass,previews:[],formNote:"",drawerOpen:false,saving:false});
   }catch(err){showToast("❌ "+err.message);setState({saving:false});}
 }
