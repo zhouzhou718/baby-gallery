@@ -720,6 +720,16 @@ async function handleSingleFiles(e){
 
 async function handleSingleSave(){
   if(!state.previews.length){showToast("请先选择照片 📷");return;}
+  const existingDates=new Set(state.photos.map(p=>p.date));
+  // Check for duplicates
+  const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||state.formDate;return d&&existingDates.has(d);});
+  if(dupes.length>0){
+    const dates=dupes.map(pv=>pv.detectedDate||state.formDate).join("、");
+    showToast(`⚠️ ${dates} 已有照片，已跳过`,4000);
+    const fresh=state.previews.filter(pv=>{const d=pv.detectedDate||state.formDate;return!d||!existingDates.has(d);});
+    if(!fresh.length){setState({saving:false});return;}
+    state.previews=fresh;
+  }
   setState({saving:true});
   const newPhotos=[];
   try{
@@ -842,10 +852,18 @@ window.applyFillDate=function(){
 };
 
 window.handleBulkSave=async function(){
-  const toSave=state.bulkItems.filter(x=>x.date);
+  const existingDates=new Set(state.photos.map(p=>p.date));
+  const allWithDate=state.bulkItems.filter(x=>x.date);
   const skip=state.bulkItems.filter(x=>!x.date).length;
-  if(!toSave.length){showToast("没有可上传的照片");return;}
-  if(skip>0&&!confirm(`有 ${skip} 张没有填写日期，将跳过。\n继续上传 ${toSave.length} 张吗？`))return;
+  // Filter out duplicates
+  const dupes=allWithDate.filter(x=>existingDates.has(x.date));
+  const toSave=allWithDate.filter(x=>!existingDates.has(x.date));
+  if(dupes.length>0){
+    const msg=`以下日期已有照片，将自动跳过：\n${dupes.map(x=>x.date).join("、")}`;
+    if(!confirm(msg+"\n\n继续上传剩余 "+toSave.length+" 张吗？"))return;
+  }
+  if(!toSave.length){showToast("所有照片日期都已存在，无需重复上传");return;}
+  if(skip>0&&!confirm(`另有 ${skip} 张没有填写日期，将跳过。\n确认上传 ${toSave.length} 张？`))return;
   setState({bulkSaving:true,bulkProgress:0});
   const newPhotos=[];
   try{
@@ -857,7 +875,7 @@ window.handleBulkSave=async function(){
     }
     const all=[...state.photos,...newPhotos].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
     saveLocalIndex(all);
-    showToast(`🎉 成功上传 ${newPhotos.length} 张！`,4000);
+    showToast(`🎉 成功上传 ${newPhotos.length} 张${dupes.length?`，跳过 ${dupes.length} 张重复`:""}！`,4000);
     setState({photos:all,bulkItems:[],bulkSaving:false,bulkProgress:0,view:"gallery"});
   }catch(err){showToast("❌ "+err.message);setState({bulkSaving:false});}
 };
