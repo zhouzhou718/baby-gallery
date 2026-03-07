@@ -681,7 +681,7 @@ function renderGallery(){
                 <span class="cls-tag" style="background:${curRange.color}18;color:${curRange.color}">${curRange.icon} ${curRange.name}</span>
                 ${p.note?`<div class="note">${p.note}</div>`:""}
               </div>
-              <button class="del" data-del="${p.id}">✕</button>
+              ${state.canUpload?`<button class="del" data-del="${p.id}">✕</button>`:""}
             </div>`).join("")}
           </div>
         </div>`;
@@ -718,7 +718,7 @@ function renderGallery(){
                   ${cls?`<span class="cls-tag" style="background:${cls.color}18;color:${cls.color}">${cls.icon} ${cls.name}</span>`:""}
                   ${p.note?`<div class="note">${p.note}</div>`:""}
                 </div>
-                <button class="del" data-del="${p.id}">✕</button>
+                ${state.canUpload?`<button class="del" data-del="${p.id}">✕</button>`:""}
               </div>`;
             }).join("")}
           </div>
