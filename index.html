@@ -653,8 +653,8 @@ function renderGallery(){
     const curRange=ranges.find(r=>r.key===activeClass)||ranges[0];
     const classPhotos=photos.filter(p=>p.date&&p.date>=curRange.start&&p.date<=curRange.end);
     const byMonth={};
-    classPhotos.forEach(p=>{const m=p.date.split("-")[1];(byMonth[m]=byMonth[m]||[]).push(p);});
-    const months=Object.keys(byMonth).sort((a,b)=>b-a);
+    classPhotos.forEach(p=>{const ym=p.date.slice(0,7);(byMonth[ym]=byMonth[ym]||[]).push(p);});
+    const months=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
     if(loading){
       content=`<div class="empty"><div class="ico spin" style="font-size:2rem">🌸</div></div>`;
     } else if(!classPhotos.length){
@@ -669,7 +669,7 @@ function renderGallery(){
         const list=byMonth[m].sort((a,b)=>b.date.localeCompare(a.date));
         return`<div class="month-section">
           <div class="grp-hd">
-            <span class="grp-month">${MONTHS[parseInt(m)-1]}</span>
+            <span class="grp-month">${m.slice(0,4)}年 ${MONTHS[parseInt(m.slice(5))-1]}</span>
             <div class="grp-line"></div>
             <span class="grp-count">${list.length}</span>
           </div>
@@ -691,8 +691,8 @@ function renderGallery(){
   } else {
     const yearPhotos=photos.filter(p=>p.date?.startsWith(String(resolvedYear)));
     const byMonth={};
-    yearPhotos.forEach(p=>{const m=p.date.split("-")[1];(byMonth[m]=byMonth[m]||[]).push(p);});
-    const months=Object.keys(byMonth).sort((a,b)=>b-a);
+    yearPhotos.forEach(p=>{const ym=p.date.slice(0,7);(byMonth[ym]=byMonth[ym]||[]).push(p);});
+    const months=Object.keys(byMonth).sort((a,b)=>b.localeCompare(a));
     if(loading){
       content=`<div class="empty"><div class="ico spin" style="font-size:2rem">🌸</div></div>`;
     } else if(!photos.length){
@@ -704,7 +704,7 @@ function renderGallery(){
         const list=byMonth[m].sort((a,b)=>b.date.localeCompare(a.date));
         return`<div class="month-section">
           <div class="grp-hd">
-            <span class="grp-month">${MONTHS[parseInt(m)-1]}</span>
+            <span class="grp-month">${MONTHS[parseInt(m.slice(5))-1]}</span>
             <div class="grp-line"></div>
             <span class="grp-count">${list.length}</span>
           </div>
