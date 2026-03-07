@@ -862,22 +862,20 @@ async function handleSingleSave(){
   // Always read date directly from DOM input — most up-to-date value
   const domDate=document.getElementById("fd-date")?.value||state.formDate;
   state.formDate=domDate; // sync back to state
-  alert("DEBUG 保存日期: " + domDate + " | state.formDate: " + state.formDate);
+
+  // domDate is what the user sees in the input — always use it as the final date
   const existingDates=new Set(state.photos.map(p=>p.date));
-  const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||domDate;return d&&existingDates.has(d);});
+  const dupes=state.previews.filter(()=>existingDates.has(domDate));
   if(dupes.length>0){
-    const dates=dupes.map(pv=>pv.detectedDate||domDate).join("、");
-    showToast(`⚠️ ${dates} 已有照片，已跳过`,4000);
-    const fresh=state.previews.filter(pv=>{const d=pv.detectedDate||domDate;return!d||!existingDates.has(d);});
-    if(!fresh.length){setState({saving:false});return;}
-    state.previews=fresh;
+    showToast(`⚠️ ${domDate} 已有照片，已跳过`,4000);
+    return;
   }
+  if(!domDate){showToast("请填写日期");return;}
   setState({saving:true});
   const newPhotos=[];
   try{
     for(const pv of state.previews){
-      const date=pv.detectedDate||domDate;
-      if(!date){showToast("请填写日期");setState({saving:false});return;}
+      const date=domDate; // always use what user typed
       const photo=await uploadPhoto(pv.file,date,state.formNote);
       newPhotos.push(photo);
     }
