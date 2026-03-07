@@ -811,7 +811,7 @@ function bindGallery(){
   const ov=document.getElementById("overlay");if(ov)ov.onclick=()=>{if(!state.saving)setState({drawerOpen:false});};
   const lb=document.getElementById("lightbox");
   if(lb){lb.onclick=()=>setState({lightbox:null});document.getElementById("lb-close").onclick=e=>{e.stopPropagation();setState({lightbox:null});};}
-  const fdDate=document.getElementById("fd-date");if(fdDate)fdDate.onchange=e=>{state.formDate=e.target.value;render();};
+  const fdDate=document.getElementById("fd-date");if(fdDate)fdDate.onchange=e=>{state.formDate=e.target.value;};
   const fdNote=document.getElementById("fd-note");if(fdNote)fdNote.oninput=e=>state.formNote=e.target.value;
   const camInput=document.getElementById("cam-input");if(camInput)camInput.onchange=e=>handleSingleFiles(e);
   const galInput=document.getElementById("gal-input");if(galInput)galInput.onchange=e=>handleSingleFiles(e);
@@ -840,14 +840,20 @@ async function handleSingleFiles(e){
     return{file:f,dataUrl,detectedDate:date,detectedSrc:src,originalName:f.name};
   }));
   const detected=items.filter(x=>x.detectedDate);
+  // Read current date from DOM before setState re-renders
+  const currentDomDate=document.getElementById("fd-date")?.value||state.formDate;
   if(detected.length>0){
     state.formDate=detected[0].detectedDate;
     showToast("📅 识别日期："+detected[0].detectedDate,3000);
   } else {
+    // No date detected — preserve whatever the user already typed
+    state.formDate=currentDomDate;
     showToast("⚠️ 未识别到日期，请手动选择",3000);
   }
+  const preservedDate=state.formDate;
   setState({previews:[...state.previews,...items]});
-  setTimeout(()=>{const inp=document.getElementById("fd-date");if(inp)inp.value=state.formDate||"";},30);
+  // After re-render, restore date input to correct value
+  setTimeout(()=>{const inp=document.getElementById("fd-date");if(inp)inp.value=preservedDate;},30);
   e.target.value="";
 }
 
