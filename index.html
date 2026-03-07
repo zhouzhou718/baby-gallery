@@ -862,6 +862,7 @@ async function handleSingleSave(){
   // Always read date directly from DOM input — most up-to-date value
   const domDate=document.getElementById("fd-date")?.value||state.formDate;
   state.formDate=domDate; // sync back to state
+  alert("DEBUG 保存日期: " + domDate + " | state.formDate: " + state.formDate);
   const existingDates=new Set(state.photos.map(p=>p.date));
   const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||domDate;return d&&existingDates.has(d);});
   if(dupes.length>0){
