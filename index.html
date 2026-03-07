@@ -853,12 +853,15 @@ async function handleSingleFiles(e){
 
 async function handleSingleSave(){
   if(!state.previews.length){showToast("请先选择照片");return;}
+  // Always read date directly from DOM input — most up-to-date value
+  const domDate=document.getElementById("fd-date")?.value||state.formDate;
+  state.formDate=domDate; // sync back to state
   const existingDates=new Set(state.photos.map(p=>p.date));
-  const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||state.formDate;return d&&existingDates.has(d);});
+  const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||domDate;return d&&existingDates.has(d);});
   if(dupes.length>0){
-    const dates=dupes.map(pv=>pv.detectedDate||state.formDate).join("、");
+    const dates=dupes.map(pv=>pv.detectedDate||domDate).join("、");
     showToast(`⚠️ ${dates} 已有照片，已跳过`,4000);
-    const fresh=state.previews.filter(pv=>{const d=pv.detectedDate||state.formDate;return!d||!existingDates.has(d);});
+    const fresh=state.previews.filter(pv=>{const d=pv.detectedDate||domDate;return!d||!existingDates.has(d);});
     if(!fresh.length){setState({saving:false});return;}
     state.previews=fresh;
   }
@@ -866,7 +869,7 @@ async function handleSingleSave(){
   const newPhotos=[];
   try{
     for(const pv of state.previews){
-      const date=pv.detectedDate||state.formDate;
+      const date=pv.detectedDate||domDate;
       if(!date){showToast("请填写日期");setState({saving:false});return;}
       const photo=await uploadPhoto(pv.file,date,state.formNote);
       newPhotos.push(photo);
