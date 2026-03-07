@@ -9,12 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 const CONFIG = {
-  cloudName:    "YOUR_CLOUD_NAME",
-  uploadPreset: "YOUR_UPLOAD_PRESET",
+  cloudName:    "dnakz7jef",
+  uploadPreset: "manman718",
   indexFolder:  "baby_gallery",
   githubUser:   "zhouzhou718",
   githubRepo:   "baby-gallery",
-  githubToken:  "YOUR_GITHUB_TOKEN", // github.com/settings/tokens → repo权限
+  githubToken:  "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",
+  uploadPassword: "manman718", // 上传密码，改成你想要的
 };
 </script>
 <style>
@@ -299,6 +300,7 @@ let state={
   fillDate:new Date().toISOString().split("T")[0],
   // setup form temps
   setupCloud:"",setupPreset:"",setupGhToken:"",
+  canUpload: false,  // unlocked by password
   setupRanges: CLASS_DEFS.map(c=>({...c,start:DEFAULT_RANGES[c.startKey]||"",end:DEFAULT_RANGES[c.endKey]||""})),
 };
 
@@ -387,6 +389,20 @@ async function uploadPhoto(file,date,note){
   if(!r.ok){const err=await r.text();throw new Error("上传失败: "+r.status+" "+err);}
   const data=await r.json();
   return{id:data.public_id,date,note:note||"",url:data.secure_url,publicId:data.public_id};
+}
+
+// ══════════════════════════════════════
+// UPLOAD PASSWORD
+// ══════════════════════════════════════
+function promptUploadPassword(){
+  const pwd=prompt("请输入上传密码：");
+  if(!pwd) return;
+  if(pwd===CONFIG.uploadPassword){
+    setState({canUpload:true});
+    showToast("🔓 已解锁上传功能");
+  } else {
+    showToast("❌ 密码错误");
+  }
 }
 
 // ══════════════════════════════════════
@@ -529,9 +545,7 @@ function renderGallery(){
     }
   } else {
     // ── YEAR mode ──
-    const yearTabs=[...new Set(photos.map(p=>p.date?.split("-")[0]).filter(Boolean))].sort((a,b)=>b-a);
-    const curYear=activeYear||yearTabs[0]||null;
-    const yearPhotos=photos.filter(p=>p.date?.startsWith(String(curYear)));
+    const yearPhotos=photos.filter(p=>p.date?.startsWith(String(resolvedYear)));
     const byMonth={};
     yearPhotos.forEach(p=>{const m=p.date.split("-")[1];(byMonth[m]=byMonth[m]||[]).push(p);});
     const months=Object.keys(byMonth).sort((a,b)=>b-a);
@@ -569,27 +583,25 @@ function renderGallery(){
       }).join("");
     }
 
-    // prepend year tabs
-    const yearTabsHtml=yearTabs.length?`<div class="tab-bar">${yearTabs.map(y=>`<button class="tab-btn ${y==curYear?"active":""}" data-year="${y}">${y}年</button>`).join("")}</div>`:"";
-    content=`<div id="year-tabs-placeholder"></div>`+content;
-    // we'll inject tabs via DOM after render
-    setTimeout(()=>{
-      const ph=document.getElementById("year-tabs-placeholder");
-      if(ph){ph.outerHTML=yearTabsHtml||"";}
-    },0);
   }
+
+  // ── compute year tabs outside of else block ──
+  const allYearTabs=[...new Set(photos.map(p=>p.date?.split("-")[0]).filter(Boolean))].sort((a,b)=>b-a);
+  const resolvedYear=activeYear||allYearTabs[0]||null;
 
   const classTabsHtml=hasClasses&&groupMode==="class"?`<div class="class-bar">
     ${ranges.map(r=>`<button class="class-tab ${r.key} ${r.key===activeClass?"active":""}" data-cls="${r.key}">${r.icon} ${r.name}</button>`).join("")}
     ${photos.filter(p=>!getClassForDate(p.date)).length?`<button class="class-tab ${activeClass==="_other"?"active":""}" data-cls="_other">📁 其他</button>`:""}
   </div>`:"";
 
+  const yearTabsHtml=groupMode==="year"&&allYearTabs.length?`<div class="tab-bar">${allYearTabs.map(y=>`<button class="tab-btn ${String(y)===String(resolvedYear)?"active":""}" data-year="${y}">${y}年</button>`).join("")}</div>`:"";
+
   return`<div id="gallery-page" style="display:flex;flex-direction:column;height:100dvh;overflow:hidden">
     <div class="topbar">
       <div class="topbar-title">🌸 宝贝成长相册</div>
       <div class="topbar-right">
-        <button class="pill" onclick="setState({view:'bulk'})">📦 导入</button>
-        <button class="pill" onclick="setState({view:'setup'})">⚙️</button>
+        ${state.canUpload ? `<button class="pill" onclick="setState({view:'bulk'})">📦 导入</button>` : ""}
+
         <div class="pill" style="cursor:default">${loading?"…":`${photos.length}张`}</div>
       </div>
     </div>
@@ -600,9 +612,10 @@ function renderGallery(){
     </div>`:""}
 
     ${classTabsHtml}
+    ${yearTabsHtml}
 
     <div class="content" id="gallery-content">${content}</div>
-    <button class="fab" onclick="setState({drawerOpen:true})">+</button>
+    ${state.canUpload ? `<button class="fab" onclick="setState({drawerOpen:true})">+</button>` : `<button class="fab" onclick="promptUploadPassword()" title="上传照片（需要密码）" style="background:linear-gradient(135deg,#ccc,#aaa);box-shadow:none">🔒</button>`}
     ${state.drawerOpen?renderDrawer():""}
     ${state.lightbox?renderLightbox():""}
   </div>`;
@@ -885,7 +898,8 @@ window.gotoGallery=function(){if(state.bulkSaving)return;setState({view:"gallery
 // ══════════════════════════════════════
 // BOOT
 // ══════════════════════════════════════
-if(isConfigured()){loadPhotos();}else{render();}
+// Config is hardcoded, always go straight to gallery
+loadPhotos();
 </script>
 </body>
 </html>
