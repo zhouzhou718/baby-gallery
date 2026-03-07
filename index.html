@@ -14,7 +14,7 @@ const CONFIG = {
   indexFolder:  "baby_gallery",
   githubUser:   "zhouzhou718",
   githubRepo:   "baby-gallery",
-  githubToken:  "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",
+  githubToken:  "", // 通过页面设置填入，不写在代码里
   uploadPassword: "manman718",
 };
 </script>
@@ -547,8 +547,22 @@ function promptUploadPassword(){
   const pwd=prompt("请输入上传密码：");
   if(!pwd) return;
   if(pwd===CONFIG.uploadPassword){
+    // Check if GitHub token is saved
+    const cfg=getConfig();
+    if(!cfg.githubToken){
+      const token=prompt("请输入 GitHub Token（用于多设备同步，只需填一次）：");
+      if(token&&token.trim()){
+        const saved=JSON.parse(localStorage.getItem("cl_config")||"{}");
+        saved.githubToken=token.trim();
+        localStorage.setItem("cl_config",JSON.stringify(saved));
+        showToast("🔓 已解锁，Token 已保存");
+      } else {
+        showToast("🔓 已解锁（未填 Token，同步功能不可用）");
+      }
+    } else {
+      showToast("🔓 已解锁上传功能");
+    }
     setState({canUpload:true});
-    showToast("🔓 已解锁上传功能");
   } else {
     showToast("❌ 密码错误");
   }
