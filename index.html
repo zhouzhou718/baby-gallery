@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#FF7BAC">
-<title>🌸 宝贝成长相册</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#6B8F68">
+<title>满满成长相册</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script>
 const CONFIG = {
   cloudName:    "dnakz7jef",
@@ -15,168 +15,332 @@ const CONFIG = {
   githubUser:   "zhouzhou718",
   githubRepo:   "baby-gallery",
   githubToken:  "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",
-  uploadPassword: "manman718", // 上传密码，改成你想要的
+  uploadPassword: "manman718",
 };
 </script>
 <style>
-:root{
-  --rose:#FF7BAC;--rose2:#FF5A9E;--blush:#FFB5C8;
-  --cream:#FFF8F0;--peach:#FFD4A8;
-  --text:#3D2C35;--text2:#8B6B7A;--shadow:rgba(255,123,172,.15);
-  /* class colors */
-  --xb:#FFB5C8;--xb2:#FF8FAF;   /* 小班 pink */
-  --zb:#B8D4FF;--zb2:#6B9FFF;   /* 中班 blue */
-  --db:#B8F0D8;--db2:#3DC98A;   /* 大班 green */
+:root {
+  --moss:#6B8F68; --moss2:#4A7047; --moss3:#3A5C38;
+  --sage:#A8C4A5; --sage-light:#D4E8D2;
+  --cream:#FAF7F2; --cream2:#F2EDE4; --cream3:#E8E0D4;
+  --linen:#F7F3EC;
+  --bark:#5C4A3A; --bark2:#8C7B6A; --bark3:#B0A090;
+  --white:#FFFFFF;
+  --shadow-sm:rgba(90,70,50,.06);
+  --shadow-md:rgba(90,70,50,.11);
+  --shadow-lg:rgba(90,70,50,.18);
+  /* class palette */
+  --xb:#E8B4A0; --xb2:#C4725A; --xb-bg:linear-gradient(135deg,#F0C8B4,#C4725A);
+  --zb:#A0BED4; --zb2:#4A7FA8; --zb-bg:linear-gradient(135deg,#B8D4E8,#4A7FA8);
+  --db:#A0C8A8; --db2:#3A8050; --db-bg:linear-gradient(135deg,#B8DCC0,#3A8050);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:'Nunito','PingFang SC',sans-serif;background:var(--cream);color:var(--text)}
+html,body{height:100%;overflow:hidden;background:var(--cream);color:var(--bark);font-family:'DM Sans',sans-serif}
 ::-webkit-scrollbar{display:none}
 #app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;overflow:hidden}
 
-/* topbar */
-.topbar{background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 4px 20px rgba(255,123,172,.35);z-index:10}
-.topbar-title{font-size:1.22rem;letter-spacing:2px;font-weight:800}
-.topbar-right{display:flex;gap:7px;align-items:center}
-.pill{background:rgba(255,255,255,.22);padding:5px 11px;border-radius:20px;font-size:.74rem;font-weight:700;border:none;color:#fff;cursor:pointer;white-space:nowrap}
-.pill:active{opacity:.8}
+/* ── TOPBAR ── */
+.topbar{
+  background:var(--white);
+  padding:14px 18px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+  border-bottom:1px solid var(--cream3);
+}
+.topbar-logo .t1{
+  font-family:'Noto Serif SC',serif;
+  font-size:1.18rem;font-weight:500;color:var(--bark);letter-spacing:1px;line-height:1.2;
+}
+.topbar-logo .t2{
+  font-size:.68rem;color:var(--bark3);font-weight:400;letter-spacing:1.2px;
+  text-transform:uppercase;margin-top:2px;
+}
+.topbar-right{display:flex;gap:6px;align-items:center}
+.icon-btn{
+  width:34px;height:34px;border-radius:10px;border:none;
+  background:var(--cream2);color:var(--bark2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;transition:background .15s;
+}
+.icon-btn:active{background:var(--cream3)}
 
-/* view toggle */
-.view-toggle{background:#fff;border-bottom:1px solid #F0E0E8;display:flex;flex-shrink:0}
-.vtab{flex:1;padding:10px;border:none;border-bottom:3px solid transparent;background:none;font-size:.86rem;font-weight:700;color:var(--text2);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s}
-.vtab.active{color:var(--rose);border-bottom-color:var(--rose)}
+/* ── VIEW TOGGLE ── */
+.view-toggle{
+  background:var(--white);border-bottom:1px solid var(--cream3);
+  display:flex;flex-shrink:0;padding:0 18px;
+}
+.vtab{
+  flex:1;padding:9px 4px;border:none;background:none;
+  font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:400;
+  color:var(--bark3);cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.3px;
+}
+.vtab.active{color:var(--moss2);border-bottom-color:var(--moss2);font-weight:500}
 
-/* class tabs */
-.class-bar{background:#fff;border-bottom:1px solid #F0E0E8;display:flex;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
-.class-tab{flex:1;min-width:80px;padding:11px 8px;border:none;border-bottom:3px solid transparent;background:none;font-size:.86rem;font-weight:800;color:var(--text2);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;white-space:nowrap;text-align:center}
-.class-tab.xb.active{color:var(--xb2);border-bottom-color:var(--xb2)}
-.class-tab.zb.active{color:var(--zb2);border-bottom-color:var(--zb2)}
-.class-tab.db.active{color:var(--db2);border-bottom-color:var(--db2)}
+/* ── CLASS TABS ── */
+.class-bar{
+  background:var(--white);border-bottom:1px solid var(--cream3);
+  display:flex;flex-shrink:0;overflow-x:auto;scrollbar-width:none;padding:0 14px;gap:2px;
+}
+.class-tab{
+  flex:1;min-width:72px;padding:9px 8px;
+  border:none;background:none;
+  font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:400;
+  color:var(--bark3);cursor:pointer;white-space:nowrap;text-align:center;
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.class-tab.xb.active{color:var(--xb2);border-bottom-color:var(--xb2);font-weight:500}
+.class-tab.zb.active{color:var(--zb2);border-bottom-color:var(--zb2);font-weight:500}
+.class-tab.db.active{color:var(--db2);border-bottom-color:var(--db2);font-weight:500}
 
-/* year tab-bar (fallback mode) */
-.tab-bar{background:#fff;border-bottom:1px solid #F0E0E8;overflow-x:auto;display:flex;flex-shrink:0;scrollbar-width:none}
-.tab-btn{padding:10px 18px;border:none;border-bottom:3px solid transparent;background:none;font-size:.88rem;font-weight:700;color:var(--text2);cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:'Nunito',sans-serif;transition:all .2s}
-.tab-btn.active{color:var(--rose);border-bottom-color:var(--rose)}
+/* ── YEAR TABS ── */
+.tab-bar{
+  background:var(--white);border-bottom:1px solid var(--cream3);
+  overflow-x:auto;display:flex;flex-shrink:0;scrollbar-width:none;padding:0 14px;gap:2px;
+}
+.tab-btn{
+  padding:9px 16px;border:none;background:none;
+  font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:400;
+  color:var(--bark3);cursor:pointer;white-space:nowrap;flex-shrink:0;
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.tab-btn.active{color:var(--moss2);border-bottom-color:var(--moss2);font-weight:500}
 
-/* content */
-.content{flex:1;overflow-y:auto;padding:16px 14px 130px;
-  background:radial-gradient(circle at 10% 20%,rgba(255,181,200,.1) 0%,transparent 50%),
-             radial-gradient(circle at 90% 80%,rgba(184,228,255,.1) 0%,transparent 50%),var(--cream)}
+/* ── CONTENT ── */
+.content{
+  flex:1;overflow-y:auto;
+  padding:0 0 120px;
+  background:var(--cream);
+}
 
-/* group header */
+/* ── CLASS BANNER ── */
+.class-banner{
+  margin:0 0 2px;
+  padding:20px 20px 18px;
+  display:flex;align-items:center;gap:14px;
+  position:relative;overflow:hidden;
+}
+.class-banner::after{
+  content:'';position:absolute;right:-30px;bottom:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:rgba(255,255,255,.12);pointer-events:none;
+}
+.class-banner .cb-icon{font-size:1.8rem;flex-shrink:0}
+.class-banner .cb-title{
+  font-family:'Noto Serif SC',serif;font-size:1.05rem;color:#fff;font-weight:500;letter-spacing:.5px;
+}
+.class-banner .cb-range{font-size:.7rem;color:rgba(255,255,255,.72);margin-top:3px;letter-spacing:.5px}
+.class-banner .cb-count{
+  margin-left:auto;font-size:.75rem;font-weight:500;
+  background:rgba(255,255,255,.22);padding:5px 13px;border-radius:20px;color:#fff;white-space:nowrap;
+}
+
+/* ── MONTH SECTION ── */
+.month-section{padding:20px 18px 0}
 .grp-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.grp-badge{color:#fff;font-weight:800;font-size:.82rem;padding:5px 14px;border-radius:50px;white-space:nowrap}
-.grp-line{flex:1;height:1.5px}
-.grp-count{font-size:.75rem;color:var(--text2);font-weight:700;background:#F5E8F0;padding:3px 10px;border-radius:20px}
+.grp-month{
+  font-family:'Noto Serif SC',serif;font-size:.9rem;color:var(--bark);
+  white-space:nowrap;letter-spacing:.5px;font-weight:400;
+}
+.grp-line{flex:1;height:1px;background:var(--cream3)}
+.grp-count{font-size:.68rem;color:var(--bark3);font-weight:400;letter-spacing:.5px}
 
-/* photo grid */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 3px 16px var(--shadow);cursor:pointer;position:relative;transition:transform .12s}
-.card:active{transform:scale(.96)}
+/* ── PHOTO GRID ── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.card{
+  background:var(--white);border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 8px var(--shadow-sm);
+  cursor:pointer;position:relative;transition:transform .15s,box-shadow .15s;
+}
+.card:active{transform:scale(.97);box-shadow:0 1px 4px var(--shadow-sm)}
 .card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.card .info{padding:9px 12px}
-.card .info .dt{font-size:.74rem;color:var(--text2);font-weight:700}
-.card .info .cls-tag{display:inline-block;font-size:.68rem;border-radius:8px;padding:1px 7px;font-weight:800;margin-top:3px}
-.card .info .note{font-size:.82rem;color:var(--text);margin-top:2px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card .del{position:absolute;top:7px;right:7px;width:28px;height:28px;background:rgba(255,255,255,.92);border:none;border-radius:50%;cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.card .info{padding:9px 11px 10px}
+.card .info .dt{font-size:.7rem;color:var(--bark3);font-weight:400;letter-spacing:.3px}
+.card .info .cls-tag{
+  display:inline-block;font-size:.62rem;border-radius:5px;
+  padding:2px 7px;font-weight:500;margin-top:4px;letter-spacing:.3px;
+}
+.card .info .note{
+  font-size:.75rem;color:var(--bark2);margin-top:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;
+  font-style:italic;
+}
+.card .del{
+  position:absolute;top:7px;right:7px;
+  width:24px;height:24px;background:rgba(255,255,255,.9);
+  border:none;border-radius:6px;cursor:pointer;
+  font-size:.7rem;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 6px rgba(0,0,0,.1);opacity:0;transition:opacity .2s;color:var(--bark2);
+}
+.card:hover .del{opacity:1}
+@media(hover:none){.card .del{opacity:1}}
 
-/* class header banner */
-.class-banner{border-radius:16px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.class-banner .cb-icon{font-size:2rem}
-.class-banner .cb-title{font-size:1.1rem;font-weight:800}
-.class-banner .cb-range{font-size:.78rem;opacity:.8;margin-top:2px}
-.class-banner .cb-count{margin-left:auto;font-size:.8rem;font-weight:700;background:rgba(255,255,255,.35);padding:4px 12px;border-radius:20px}
+/* ── EMPTY ── */
+.empty{text-align:center;padding:80px 24px;color:var(--bark3)}
+.empty .ico{font-size:2.8rem;margin-bottom:16px;opacity:.5}
+.empty p{font-family:'Noto Serif SC',serif;font-size:1rem;color:var(--bark2);margin-bottom:6px;font-weight:400}
+.empty small{font-size:.8rem;line-height:1.8;color:var(--bark3)}
+.btn-primary{
+  display:inline-block;margin-top:20px;padding:12px 26px;
+  background:var(--moss);color:#fff;border:none;border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-weight:500;font-size:.88rem;
+  cursor:pointer;letter-spacing:.3px;transition:all .18s;
+}
+.btn-primary:active{background:var(--moss2);transform:scale(.97)}
 
-/* empty */
-.empty{text-align:center;padding:70px 20px;color:var(--text2)}
-.empty .ico{font-size:3.5rem;margin-bottom:14px}
-.empty p{font-weight:700;font-size:1rem}
-.empty small{font-size:.85rem;opacity:.7;display:block;margin-top:6px;line-height:1.7}
-.btn-primary{display:inline-block;margin-top:16px;padding:12px 24px;background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;border:none;border-radius:14px;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 4px 16px rgba(255,123,172,.4);font-family:'Nunito',sans-serif}
+/* ── FAB ── */
+.fab{
+  position:fixed;bottom:26px;right:calc(50% - 240px + 18px);
+  width:52px;height:52px;
+  background:var(--moss);color:#fff;border:none;border-radius:16px;
+  font-size:1.5rem;box-shadow:0 4px 18px rgba(107,143,104,.45);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  z-index:50;transition:all .18s;
+}
+.fab:active{transform:scale(.93)}
+.fab.locked{background:var(--cream3);color:var(--bark3);box-shadow:none}
+@media(max-width:480px){.fab{right:18px}}
 
-/* FAB */
-.fab{position:fixed;bottom:24px;right:calc(50% - 240px + 20px);width:56px;height:56px;background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;border:none;border-radius:50%;font-size:1.8rem;box-shadow:0 6px 20px rgba(255,123,172,.55);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:50;line-height:1;font-weight:300}
-.fab:active{transform:scale(.9)}
-@media(max-width:480px){.fab{right:20px}}
-
-/* overlay + drawer */
-.overlay{position:fixed;inset:0;background:rgba(61,44,53,.45);z-index:60;backdrop-filter:blur(3px)}
-.drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.12);z-index:70;padding:0 20px 32px;animation:slideUp .35s cubic-bezier(.32,.72,0,1)}
-.drawer-handle{width:40px;height:4px;background:#E0D0D8;border-radius:2px;margin:12px auto 16px}
-.drawer-title{font-size:1.15rem;font-weight:800;color:var(--rose);text-align:center;margin-bottom:16px}
+/* ── OVERLAY + DRAWER ── */
+.overlay{position:fixed;inset:0;background:rgba(60,46,32,.42);z-index:60;backdrop-filter:blur(3px)}
+.drawer{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:var(--white);
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -6px 32px rgba(90,70,50,.14);
+  z-index:70;padding:0 20px 36px;
+  animation:slideUp .28s cubic-bezier(.32,.72,0,1);
+}
+.drawer-handle{width:32px;height:3px;background:var(--cream3);border-radius:2px;margin:13px auto 16px}
+.drawer-title{
+  font-family:'Noto Serif SC',serif;font-size:1rem;color:var(--bark);
+  text-align:center;margin-bottom:14px;font-weight:400;letter-spacing:.5px;
+}
+.class-hint{
+  border-radius:8px;padding:8px 14px;font-size:.76rem;font-weight:500;
+  margin-bottom:12px;text-align:center;letter-spacing:.3px;
+}
 .form-row{display:flex;gap:10px;margin-bottom:12px}
 .form-group{flex:1}
-.form-group label{display:block;font-size:.72rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
-.form-group input[type=date],.form-group input[type=text]{width:100%;padding:11px 13px;border:2px solid #F0E0E8;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--text);background:var(--cream);outline:none;-webkit-appearance:none}
-.form-group input:focus{border-color:var(--rose);background:#fff}
-.class-hint{border-radius:10px;padding:8px 12px;font-size:.8rem;font-weight:700;margin-bottom:12px;text-align:center}
+.form-group label{
+  display:block;font-size:.64rem;font-weight:500;color:var(--bark3);
+  text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px;
+}
+.form-group input[type=date],.form-group input[type=text]{
+  width:100%;padding:10px 12px;
+  border:1.5px solid var(--cream3);border-radius:9px;
+  font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--bark);
+  background:var(--cream);outline:none;-webkit-appearance:none;transition:border-color .2s;
+}
+.form-group input:focus{border-color:var(--moss);background:var(--white)}
 .media-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.media-btn{padding:14px 10px;border:2px solid #F0E0E8;border-radius:14px;background:var(--cream);font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative}
+.media-btn{
+  padding:15px 10px;border:1.5px solid var(--cream3);border-radius:10px;
+  background:var(--cream);font-family:'DM Sans',sans-serif;font-size:.82rem;
+  font-weight:400;color:var(--bark2);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:relative;transition:background .15s;
+}
+.media-btn:active{background:var(--cream2)}
 .media-btn input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
-.media-btn .ico{font-size:1.4rem}
+.media-btn .ico{font-size:1.25rem}
 .preview-strip{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;padding-bottom:4px}
-.preview-strip img{width:52px;height:52px;border-radius:10px;object-fit:cover;border:2px solid var(--blush);flex-shrink:0}
-.btn-save{width:100%;padding:15px;background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(255,123,172,.4);letter-spacing:.5px}
-.btn-save:disabled{background:var(--blush);cursor:not-allowed}
+.preview-strip img{width:52px;height:52px;border-radius:8px;object-fit:cover;border:1.5px solid var(--cream3);flex-shrink:0}
+.btn-save{
+  width:100%;padding:14px;background:var(--moss);color:#fff;border:none;border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;cursor:pointer;
+  letter-spacing:.3px;transition:all .18s;
+}
+.btn-save:active{background:var(--moss2)}
+.btn-save:disabled{background:var(--sage);cursor:not-allowed}
 
-/* bulk page */
-.page{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;overflow:hidden}
-.bulk-list{flex:1;overflow-y:auto;padding:16px 14px 120px}
-.bulk-item{display:flex;gap:10px;background:#fff;border-radius:14px;padding:10px 12px;margin-bottom:10px;box-shadow:0 2px 10px rgba(255,123,172,.1);align-items:flex-start}
-.bulk-item img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0}
-.bulk-item .meta{flex:1;min-width:0}
-.bulk-item .fname{font-size:.72rem;color:var(--text2);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;margin-bottom:4px}
-.bulk-item .fields{display:flex;gap:6px}
-.bulk-item input[type=date]{flex:0 0 auto;width:130px;padding:6px 8px;border:1.5px solid #F0E0E8;border-radius:8px;font-family:'Nunito',sans-serif;font-size:.8rem;outline:none;background:var(--cream)}
-.bulk-item input[type=date].missing{border-color:#FF9999;background:#FFF0F0}
-.bulk-item input[type=text]{flex:1;padding:6px 8px;border:1.5px solid #F0E0E8;border-radius:8px;font-family:'Nunito',sans-serif;font-size:.8rem;outline:none;background:var(--cream);min-width:0}
-.bulk-item .rm{background:none;border:none;cursor:pointer;color:#CCA0B0;font-size:1rem;flex-shrink:0;padding:2px}
-.src-badge{display:inline-block;font-size:.6rem;padding:1px 6px;border-radius:8px;font-weight:700;margin-left:4px}
-.fill-bar{background:#FFF0F5;border:1.5px solid var(--blush);border-radius:14px;padding:12px 14px;margin-bottom:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.fill-bar span{font-size:.82rem;font-weight:700;color:var(--rose2);flex:1 1 160px}
-.fill-bar input{padding:7px 10px;border:1.5px solid var(--blush);border-radius:10px;font-family:'Nunito',sans-serif;font-size:.85rem;outline:none;background:#fff}
-.fill-bar button{padding:7px 14px;background:var(--rose);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap}
-.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #F0E0E8;padding:12px 16px 28px;display:flex;gap:10px;align-items:center;z-index:30}
-.bottom-bar .info{flex:1;font-size:.82rem;color:var(--text2);font-weight:700;line-height:1.4}
-.bottom-bar .info b{color:var(--rose);font-weight:800}
-.bottom-bar .info .warn{color:#FF9800}
-.progress-wrap{text-align:center;padding:60px 20px}
-.progress-bar-bg{background:#F0E0E8;border-radius:99px;height:10px;overflow:hidden;margin:0 20px 8px}
-.progress-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--rose),var(--rose2));transition:width .3s}
+/* ── LIGHTBOX ── */
+.lightbox{
+  position:fixed;inset:0;background:rgba(20,15,10,.95);
+  z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:24px;
+}
+.lightbox img{max-width:100%;max-height:70vh;border-radius:10px;object-fit:contain;animation:popIn .22s ease}
+.lightbox .lb-info{margin-top:20px;text-align:center}
+.lightbox .lb-date{font-family:'Noto Serif SC',serif;font-size:.95rem;color:var(--sage-light);font-weight:400;letter-spacing:.5px}
+.lightbox .lb-cls{font-size:.75rem;margin-top:5px;font-weight:500;letter-spacing:.5px;opacity:.85}
+.lightbox .lb-note{font-size:.82rem;color:rgba(255,255,255,.5);margin-top:6px;font-style:italic;line-height:1.5}
+.lightbox .lb-close{
+  position:fixed;top:18px;right:18px;width:38px;height:38px;
+  background:rgba(255,255,255,.1);border:none;border-radius:10px;
+  font-size:.9rem;color:rgba(255,255,255,.7);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.lightbox .lb-close:active{background:rgba(255,255,255,.2)}
 
-/* lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(15,8,12,.94);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-.lightbox img{max-width:100%;max-height:72vh;border-radius:14px;object-fit:contain;animation:popIn .25s ease}
-.lightbox .lb-info{margin-top:16px;text-align:center;color:#fff}
-.lightbox .lb-date{font-weight:800;font-size:1rem;color:var(--blush)}
-.lightbox .lb-cls{font-size:.85rem;margin-top:3px;font-weight:800}
-.lightbox .lb-note{font-size:.88rem;opacity:.75;margin-top:4px}
-.lightbox .lb-close{position:fixed;top:20px;right:20px;width:40px;height:40px;background:rgba(255,255,255,.15);border:none;border-radius:50%;font-size:1.1rem;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-/* toast */
-.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-16px);background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;padding:11px 22px;border-radius:50px;font-weight:700;font-size:.9rem;z-index:300;box-shadow:0 6px 20px rgba(255,123,172,.4);transition:all .35s cubic-bezier(.34,1.56,.64,1);opacity:0;pointer-events:none;white-space:nowrap}
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:72px;left:50%;
+  transform:translateX(-50%) translateY(-12px);
+  background:var(--bark);color:#fff;
+  padding:9px 18px;border-radius:8px;font-weight:400;font-size:.82rem;
+  z-index:300;box-shadow:0 3px 16px rgba(0,0,0,.25);
+  transition:all .28s cubic-bezier(.34,1.4,.64,1);
+  opacity:0;pointer-events:none;white-space:nowrap;letter-spacing:.2px;
+}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-/* setup */
-.setup{display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:30px 24px 50px;background:var(--cream);overflow-y:auto}
-.setup h2{font-size:1.5rem;color:var(--rose);margin-bottom:8px;text-align:center}
-.setup .sub{color:var(--text2);font-size:.9rem;line-height:1.7;margin-bottom:20px;text-align:center}
-.setup .field{width:100%;margin-bottom:12px;text-align:left}
-.setup .field label{display:block;font-size:.78rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
-.setup .field input{width:100%;padding:13px 15px;border:2px solid #F0E0E8;border-radius:14px;font-family:'Nunito',sans-serif;font-size:.95rem;color:var(--text);background:#fff;outline:none}
-.setup .field input:focus{border-color:var(--rose)}
-.setup .hint{font-size:.78rem;color:var(--text2);opacity:.75;margin-top:4px}
-.sec-title{font-size:.78rem;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:1px;width:100%;text-align:left;margin:18px 0 10px;padding-top:16px;border-top:1px dashed #F0D0DC}
-.class-setup-row{width:100%;background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 10px var(--shadow)}
+/* ── BULK PAGE ── */
+.page{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;overflow:hidden}
+.bulk-list{flex:1;overflow-y:auto;padding:16px 16px 120px;background:var(--cream)}
+.bulk-item{
+  display:flex;gap:10px;background:var(--white);border-radius:10px;
+  padding:10px 12px;margin-bottom:8px;
+  box-shadow:0 1px 6px var(--shadow-sm);align-items:flex-start;
+}
+.bulk-item img{width:50px;height:50px;border-radius:7px;object-fit:cover;flex-shrink:0}
+.bulk-item .meta{flex:1;min-width:0}
+.bulk-item .fname{font-size:.68rem;color:var(--bark3);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;margin-bottom:5px}
+.bulk-item .fields{display:flex;gap:6px}
+.bulk-item input[type=date]{flex:0 0 auto;width:128px;padding:6px 8px;border:1.5px solid var(--cream3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.76rem;outline:none;background:var(--cream)}
+.bulk-item input[type=date].missing{border-color:#E8A0A0;background:#FDF5F5}
+.bulk-item input[type=text]{flex:1;padding:6px 8px;border:1.5px solid var(--cream3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.76rem;outline:none;background:var(--cream);min-width:0}
+.bulk-item .rm{background:none;border:none;cursor:pointer;color:var(--cream3);font-size:.9rem;flex-shrink:0;padding:2px}
+.src-badge{display:inline-block;font-size:.56rem;padding:1px 5px;border-radius:4px;font-weight:500;margin-left:4px;letter-spacing:.3px}
+.fill-bar{
+  background:var(--white);border:1.5px solid var(--cream3);border-radius:10px;
+  padding:11px 14px;margin-bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.fill-bar span{font-size:.78rem;font-weight:500;color:var(--xb2);flex:1 1 160px}
+.fill-bar input{padding:6px 10px;border:1.5px solid var(--cream3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.8rem;outline:none;background:var(--cream)}
+.fill-bar button{padding:6px 14px;background:var(--moss);color:#fff;border:none;border-radius:7px;font-weight:500;font-size:.78rem;cursor:pointer}
+.bottom-bar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;background:var(--white);
+  border-top:1px solid var(--cream3);padding:12px 16px 28px;
+  display:flex;gap:10px;align-items:center;z-index:30;
+}
+.bottom-bar .info{flex:1;font-size:.78rem;color:var(--bark3);font-weight:400;line-height:1.5}
+.bottom-bar .info b{color:var(--moss2);font-weight:600}
+.bottom-bar .info .warn{color:#C47050}
+.progress-wrap{text-align:center;padding:70px 20px}
+.progress-bar-bg{background:var(--cream3);border-radius:99px;height:4px;overflow:hidden;margin:0 24px 10px}
+.progress-bar{height:100%;border-radius:99px;background:var(--moss);transition:width .3s}
+
+/* ── SETUP ── */
+.setup{display:flex;flex-direction:column;align-items:center;min-height:100dvh;padding:40px 24px 60px;background:var(--cream);overflow-y:auto}
+.setup h2{font-family:'Noto Serif SC',serif;font-size:1.5rem;color:var(--bark);margin-bottom:6px;font-weight:400;letter-spacing:1px}
+.setup .sub{color:var(--bark3);font-size:.85rem;line-height:1.8;margin-bottom:24px;text-align:center}
+.setup .field{width:100%;margin-bottom:12px}
+.setup .field label{display:block;font-size:.64rem;font-weight:500;color:var(--bark3);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.setup .field input{width:100%;padding:12px 14px;border:1.5px solid var(--cream3);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--bark);background:var(--white);outline:none;transition:border-color .2s}
+.setup .field input:focus{border-color:var(--moss)}
+.setup .hint{font-size:.7rem;color:var(--bark3);margin-top:4px;line-height:1.5}
+.sec-title{font-size:.64rem;font-weight:600;color:var(--bark3);text-transform:uppercase;letter-spacing:1.5px;width:100%;margin:20px 0 10px;padding-top:20px;border-top:1px solid var(--cream3)}
+.class-setup-row{width:100%;background:var(--white);border-radius:10px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 6px var(--shadow-sm)}
 .class-setup-row .cls-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.class-setup-row .cls-ico{font-size:1.2rem}
-.class-setup-row .cls-name{font-weight:800;font-size:.95rem}
+.class-setup-row .cls-name{font-weight:500;font-size:.88rem}
 .class-setup-row .cls-dates{display:flex;gap:8px;align-items:center}
-.class-setup-row .cls-dates input{flex:1;padding:8px 10px;border:1.5px solid #F0E0E8;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.82rem;outline:none;background:var(--cream)}
-.class-setup-row .cls-dates input:focus{border-color:var(--rose)}
-.class-setup-row .cls-dates span{font-size:.8rem;color:var(--text2);white-space:nowrap}
+.class-setup-row .cls-dates input{flex:1;padding:7px 10px;border:1.5px solid var(--cream3);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.78rem;outline:none;background:var(--cream)}
+.class-setup-row .cls-dates span{font-size:.76rem;color:var(--bark3);white-space:nowrap}
 
 @keyframes slideUp{from{transform:translateX(-50%) translateY(100%)}to{transform:translateX(-50%) translateY(0)}}
-@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin 1s linear infinite;display:inline-block}
 </style>
@@ -189,9 +353,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito','PingFang SC',sans-se
 // CLASSES CONFIG
 // ══════════════════════════════════════
 const CLASS_DEFS = [
-  { key:"xb", name:"小班", icon:"🌱", color:"var(--xb2)", bg:"linear-gradient(135deg,var(--xb),var(--xb2))", light:"#FFF0F5", startKey:"xb_start", endKey:"xb_end" },
-  { key:"zb", name:"中班", icon:"🌸", color:"var(--zb2)", bg:"linear-gradient(135deg,var(--zb),var(--zb2))", light:"#EEF5FF", startKey:"zb_start", endKey:"zb_end" },
-  { key:"db", name:"大班", icon:"🌟", color:"var(--db2)", bg:"linear-gradient(135deg,var(--db),var(--db2))", light:"#EDFFF6", startKey:"db_start", endKey:"db_end" },
+  { key:"xb", name:"小班", icon:"🌱", color:"#C4725A", bg:"linear-gradient(135deg,#F0C8B4,#C4725A)", light:"#FDF0EC", startKey:"xb_start", endKey:"xb_end" },
+  { key:"zb", name:"中班", icon:"🌸", color:"#4A7FA8", bg:"linear-gradient(135deg,#B8D4E8,#4A7FA8)", light:"#EEF4F8", startKey:"zb_start", endKey:"zb_end" },
+  { key:"db", name:"大班", icon:"🌟", color:"#3A8050", bg:"linear-gradient(135deg,#B8DCC0,#3A8050)", light:"#EEF6F1", startKey:"db_start", endKey:"db_end" },
 ];
 
 const DEFAULT_RANGES = {
@@ -215,8 +379,6 @@ function saveClassRanges(ranges) {
 function classRangesConfigured() {
   return getClassRanges().some(r=>r.start&&r.end);
 }
-
-// Given a date string, return which class it falls in (or null)
 function getClassForDate(dateStr) {
   if(!dateStr) return null;
   const ranges = getClassRanges();
@@ -230,7 +392,6 @@ function getClassForDate(dateStr) {
 // HELPERS
 // ══════════════════════════════════════
 const MONTHS=["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-
 function fmtFull(d){if(!d)return"未知日期";const[y,m,day]=d.split("-");return`${y}年${parseInt(m)}月${parseInt(day)}日`;}
 function fmtShort(d){if(!d)return"?";const[,m,day]=d.split("-");return`${parseInt(m)}/${parseInt(day)}`;}
 
@@ -281,12 +442,12 @@ function isConfigured(){const c=getConfig();return c.cloudName&&c.cloudName!=="Y
 // STATE
 // ══════════════════════════════════════
 let state={
-  view:"gallery",      // gallery | bulk | setup
-  groupMode:"class",   // class | year
+  view:"gallery",
+  groupMode:"class",
   photos:[],
   loading:true,
-  activeClass:"xb",   // xb | zb | db (class mode)
-  activeYear:null,     // year mode
+  activeClass:"xb",
+  activeYear:null,
   lightbox:null,
   drawerOpen:false,
   saving:false,
@@ -298,12 +459,10 @@ let state={
   bulkSaving:false,
   bulkProgress:0,
   fillDate:new Date().toISOString().split("T")[0],
-  // setup form temps
   setupCloud:"",setupPreset:"",setupGhToken:"",
-  canUpload: false,  // unlocked by password
+  canUpload: false,
   setupRanges: CLASS_DEFS.map(c=>({...c,start:DEFAULT_RANGES[c.startKey]||"",end:DEFAULT_RANGES[c.endKey]||""})),
 };
-
 function setState(patch){Object.assign(state,patch);render();}
 
 // ══════════════════════════════════════
@@ -311,7 +470,6 @@ function setState(patch){Object.assign(state,patch);render();}
 // ══════════════════════════════════════
 async function loadPhotos(){
   setState({loading:true});
-  // 1. Show local cache immediately
   try{
     const cached=JSON.parse(localStorage.getItem("gallery_photos")||"[]");
     if(cached.length){
@@ -319,7 +477,6 @@ async function loadPhotos(){
       setState({photos:cached,loading:false,activeClass:resolveActiveClass(cached)});
     }
   }catch{}
-  // 2. Fetch from GitHub JSON (source of truth, works on all devices)
   try{
     const fresh=await fetchFromGitHub();
     if(fresh&&fresh.length){
@@ -344,37 +501,29 @@ function resolveActiveClass(photos){
   return activeClass;
 }
 
-// ── GitHub JSON index ──────────────────────────────
 const GH_API = "https://api.github.com";
-
 async function fetchFromGitHub(){
-  const cfg=getConfig();
   const url=`https://zhouzhou718.github.io/baby-gallery/photos.json?_=${Date.now()}`;
   const r=await fetch(url);
   if(!r.ok) return [];
   return await r.json();
 }
-
 async function saveIndexToGitHub(photos){
   const cfg=getConfig();
   if(!cfg.githubToken||cfg.githubToken==="YOUR_GITHUB_TOKEN") return;
   const path="photos.json";
   const apiUrl=`${GH_API}/repos/zhouzhou718/baby-gallery/contents/${path}`;
-  // Get current SHA (needed for update)
   let sha="";
   try{
     const r=await fetch(apiUrl,{headers:{Authorization:`token ${cfg.githubToken}`,"Accept":"application/vnd.github.v3+json"}});
     if(r.ok){const d=await r.json();sha=d.sha||"";}
   }catch{}
-  // Push updated JSON
   const body={message:"update photos index",content:btoa(unescape(encodeURIComponent(JSON.stringify(photos,null,2))))};
   if(sha) body.sha=sha;
   await fetch(apiUrl,{method:"PUT",headers:{Authorization:`token ${cfg.githubToken}`,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"},body:JSON.stringify(body)});
 }
-
 function saveLocalIndex(photos){
   localStorage.setItem("gallery_photos",JSON.stringify(photos));
-  // Async push to GitHub (don't await, fire and forget)
   saveIndexToGitHub(photos).catch(e=>console.warn("GitHub save failed:",e));
 }
 
@@ -383,7 +532,7 @@ async function uploadPhoto(file,date,note){
   const fd=new FormData();
   fd.append("file",file);
   fd.append("upload_preset",cfg.uploadPreset);
-  fd.append("tags","baby_gallery");  // tag for listing
+  fd.append("tags","baby_gallery");
   fd.append("context",`date=${date}|note=${encodeURIComponent(note||"")}`);
   const r=await fetch(`https://api.cloudinary.com/v1_1/${cfg.cloudName}/image/upload`,{method:"POST",body:fd});
   if(!r.ok){const err=await r.text();throw new Error("上传失败: "+r.status+" "+err);}
@@ -422,43 +571,27 @@ function renderSetup(){
   const saved=getClassRanges();
   const setupR=state.setupRanges.map((r,i)=>({...r,start:r.start||saved[i].start,end:r.end||saved[i].end}));
   return`<div class="setup">
-    <div style="font-size:3rem;margin-bottom:12px">🌸</div>
-    <h2>宝贝成长相册</h2>
-    <p class="sub">照片上传到 Cloudinary，任何设备都能访问。<br><a href="https://cloudinary.com/users/register/free" target="_blank" style="color:var(--rose)">点这里免费注册 Cloudinary</a></p>
-
+    <div style="font-size:2.5rem;margin-bottom:16px">🌸</div>
+    <h2>成长相册</h2>
+    <p class="sub">照片上传到 Cloudinary，任何设备都能访问。<br><a href="https://cloudinary.com/users/register/free" target="_blank" style="color:var(--terra)">点这里免费注册 Cloudinary</a></p>
     <div class="sec-title">☁️ Cloudinary 配置</div>
     <div class="field"><label>Cloud Name</label><input id="inp-cloud" type="text" placeholder="例如: mycloud123" value="${state.setupCloud}"><div class="hint">Dashboard 首页可以看到</div></div>
     <div class="field"><label>Upload Preset（Unsigned）</label><input id="inp-preset" type="text" placeholder="例如: baby_upload" value="${state.setupPreset}"><div class="hint">Settings → Upload → Upload Presets → 新建 Unsigned</div></div>
-
     <div class="sec-title">🔑 GitHub Token（多设备同步）</div>
-    <div class="field"><label>Personal Access Token</label><input id="inp-ghtoken" type="password" placeholder="ghp_xxxxxxxxxxxx" value="${state.setupGhToken||''}"><div class="hint"><a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--rose)">点这里生成 Token</a> → 勾选 repo 权限 → No expiration</div></div>
-
+    <div class="field"><label>Personal Access Token</label><input id="inp-ghtoken" type="password" placeholder="ghp_xxxxxxxxxxxx" value="${state.setupGhToken||''}"><div class="hint"><a href="https://github.com/settings/tokens/new" target="_blank" style="color:var(--terra)">点这里生成 Token</a> → 勾选 repo → No expiration</div></div>
     <div class="sec-title">🎓 幼儿园班级时间段</div>
-    <p style="font-size:.82rem;color:var(--text2);line-height:1.6;margin-bottom:12px;width:100%">填入每个班级的起止日期，照片将自动归类到对应班级。可以只填已有照片的班级。</p>
-
     ${CLASS_DEFS.map((c,i)=>`
-    <div class="class-setup-row" style="border-left:4px solid ${c.color}">
-      <div class="cls-head">
-        <span class="cls-ico">${c.icon}</span>
-        <span class="cls-name" style="color:${c.color}">${c.name}</span>
-      </div>
+    <div class="class-setup-row">
+      <div class="cls-head"><span>${c.icon}</span><span class="cls-name" style="color:${c.color}">${c.name}</span></div>
       <div class="cls-dates">
-        <input type="date" id="cls-${c.key}-start" value="${setupR[i].start}" placeholder="开始日期">
+        <input type="date" id="cls-${c.key}-start" value="${setupR[i].start}">
         <span>→</span>
-        <input type="date" id="cls-${c.key}-end" value="${setupR[i].end}" placeholder="结束日期">
+        <input type="date" id="cls-${c.key}-end" value="${setupR[i].end}">
       </div>
     </div>`).join("")}
-
-    <button class="btn-primary" style="width:100%;margin-top:16px" onclick="saveSetup()">✅ 保存并开始使用</button>
-    <div style="margin-top:16px;font-size:.78rem;color:var(--text2);line-height:1.8;text-align:left;background:#FFF0F5;padding:14px 16px;border-radius:14px;width:100%">
-      <b>获取 Upload Preset：</b><br>
-      1. 登录 Cloudinary → Settings → Upload<br>
-      2. Upload Presets → Add upload preset<br>
-      3. Signing mode 选 <b>Unsigned</b> → 保存 → 复制名称
-    </div>
+    <button class="btn-primary" style="width:100%;margin-top:16px" onclick="saveSetup()">保存并开始使用</button>
   </div>`;
 }
-
 function bindSetup(){
   document.getElementById("inp-cloud").oninput=e=>state.setupCloud=e.target.value.trim();
   document.getElementById("inp-preset").oninput=e=>state.setupPreset=e.target.value.trim();
@@ -471,14 +604,12 @@ function bindSetup(){
     if(e2)e2.onchange=ev=>{state.setupRanges[i]={...state.setupRanges[i],end:ev.target.value};};
   });
 }
-
 window.saveSetup=function(){
   const cloud=document.getElementById("inp-cloud").value.trim();
   const preset=document.getElementById("inp-preset").value.trim();
   if(!cloud||!preset){showToast("请填写 Cloud Name 和 Upload Preset");return;}
   const ghToken=document.getElementById("inp-ghtoken").value.trim();
   localStorage.setItem("cl_config",JSON.stringify({cloudName:cloud,uploadPreset:preset,indexFolder:"baby_gallery",githubToken:ghToken}));
-  // save class ranges
   const ranges=CLASS_DEFS.map((c,i)=>{
     const start=document.getElementById(`cls-${c.key}-start`).value;
     const end=document.getElementById(`cls-${c.key}-end`).value;
@@ -499,44 +630,44 @@ function renderGallery(){
   const thisYear=new Date().getFullYear().toString();
   const thisYearDays=new Set(photos.filter(p=>p.date?.startsWith(thisYear)).map(p=>p.date)).size;
 
-  // ── CLASS mode ──
+  // Compute year vars upfront so both branches can use them
+  const allYearTabs=[...new Set(photos.map(p=>p.date?.split("-")[0]).filter(Boolean))].sort((a,b)=>b-a);
+  const resolvedYear=activeYear||allYearTabs[0]||null;
+
   let content="";
   if(groupMode==="class"&&hasClasses){
     const curRange=ranges.find(r=>r.key===activeClass)||ranges[0];
     const classPhotos=photos.filter(p=>p.date&&p.date>=curRange.start&&p.date<=curRange.end);
-    // sub-group by month
     const byMonth={};
     classPhotos.forEach(p=>{const m=p.date.split("-")[1];(byMonth[m]=byMonth[m]||[]).push(p);});
     const months=Object.keys(byMonth).sort((a,b)=>b-a);
-
     if(loading){
-      content=`<div class="empty"><div class="ico spin">🌸</div><p>加载中…</p></div>`;
+      content=`<div class="empty"><div class="ico spin" style="font-size:2rem">🌸</div></div>`;
     } else if(!classPhotos.length){
-      content=`<div class="empty"><div class="ico">${curRange.icon}</div><p>${curRange.name}还没有照片</p><small>这个班级的时间段：${curRange.start} 至 ${curRange.end}</small></div>`;
+      content=`<div class="empty"><div class="ico">${curRange.icon}</div><p>${curRange.name}还没有照片</p><small>${curRange.start} — ${curRange.end}</small></div>`;
     } else {
-      // class banner
-      const banner=`<div class="class-banner" style="background:${curRange.bg};color:#fff">
+      const banner=`<div class="class-banner" style="background:${curRange.bg}">
         <span class="cb-icon">${curRange.icon}</span>
         <div><div class="cb-title">${curRange.name}</div><div class="cb-range">${curRange.start} — ${curRange.end}</div></div>
         <div class="cb-count">${classPhotos.length} 张</div>
       </div>`;
       const monthGroups=months.map(m=>{
         const list=byMonth[m].sort((a,b)=>b.date.localeCompare(a.date));
-        return`<div style="margin-bottom:24px">
+        return`<div class="month-section">
           <div class="grp-hd">
-            <span class="grp-badge" style="background:${curRange.bg}">🌸 ${MONTHS[parseInt(m)-1]}</span>
-            <div class="grp-line" style="background:linear-gradient(90deg,${curRange.color}44,transparent)"></div>
-            <span class="grp-count">${list.length}张</span>
+            <span class="grp-month">${MONTHS[parseInt(m)-1]}</span>
+            <div class="grp-line"></div>
+            <span class="grp-count">${list.length}</span>
           </div>
           <div class="grid">
             ${list.map(p=>`<div class="card" data-id="${p.id}">
               <img src="${p.url}" loading="lazy" alt="">
               <div class="info">
-                <div class="dt">📅 ${fmtShort(p.date)}</div>
-                <span class="cls-tag" style="background:${curRange.color}22;color:${curRange.color}">${curRange.icon}${curRange.name}</span>
-                ${p.note?`<div class="note">💬 ${p.note}</div>`:""}
+                <div class="dt">${fmtShort(p.date)}</div>
+                <span class="cls-tag" style="background:${curRange.color}18;color:${curRange.color}">${curRange.icon} ${curRange.name}</span>
+                ${p.note?`<div class="note">${p.note}</div>`:""}
               </div>
-              <button class="del" data-del="${p.id}">🗑️</button>
+              <button class="del" data-del="${p.id}">✕</button>
             </div>`).join("")}
           </div>
         </div>`;
@@ -544,26 +675,24 @@ function renderGallery(){
       content=banner+monthGroups;
     }
   } else {
-    // ── YEAR mode ──
     const yearPhotos=photos.filter(p=>p.date?.startsWith(String(resolvedYear)));
     const byMonth={};
     yearPhotos.forEach(p=>{const m=p.date.split("-")[1];(byMonth[m]=byMonth[m]||[]).push(p);});
     const months=Object.keys(byMonth).sort((a,b)=>b-a);
-
     if(loading){
-      content=`<div class="empty"><div class="ico spin">🌸</div><p>加载中…</p></div>`;
+      content=`<div class="empty"><div class="ico spin" style="font-size:2rem">🌸</div></div>`;
     } else if(!photos.length){
-      content=`<div class="empty"><div class="ico">🌸</div><p>还没有照片哦～</p><small>点右下角 <b style="color:var(--rose)">+</b> 添加<br>或点顶部 <b style="color:var(--rose)">批量导入</b></small><button class="btn-primary" onclick="setState({view:'bulk'})">📦 批量导入</button></div>`;
+      content=`<div class="empty"><div class="ico">🌿</div><p>还没有照片哦</p><small>点右下角按钮添加第一张</small><button class="btn-primary" onclick="setState({view:'bulk'})">批量导入</button></div>`;
     } else if(!yearPhotos.length){
       content=`<div class="empty"><div class="ico">📷</div><p>这一年还没有照片</p></div>`;
     } else {
       content=months.map(m=>{
         const list=byMonth[m].sort((a,b)=>b.date.localeCompare(a.date));
-        return`<div style="margin-bottom:24px">
+        return`<div class="month-section">
           <div class="grp-hd">
-            <span class="grp-badge" style="background:linear-gradient(135deg,var(--peach),#FFB870)">🌸 ${MONTHS[parseInt(m)-1]}</span>
-            <div class="grp-line" style="background:linear-gradient(90deg,#FFD4A8,transparent)"></div>
-            <span class="grp-count">${list.length}张</span>
+            <span class="grp-month">${MONTHS[parseInt(m)-1]}</span>
+            <div class="grp-line"></div>
+            <span class="grp-count">${list.length}</span>
           </div>
           <div class="grid">
             ${list.map(p=>{
@@ -571,51 +700,43 @@ function renderGallery(){
               return`<div class="card" data-id="${p.id}">
                 <img src="${p.url}" loading="lazy" alt="">
                 <div class="info">
-                  <div class="dt">📅 ${fmtShort(p.date)}</div>
-                  ${cls?`<span class="cls-tag" style="background:${cls.color}22;color:${cls.color}">${cls.icon}${cls.name}</span>`:""}
-                  ${p.note?`<div class="note">💬 ${p.note}</div>`:""}
+                  <div class="dt">${fmtShort(p.date)}</div>
+                  ${cls?`<span class="cls-tag" style="background:${cls.color}18;color:${cls.color}">${cls.icon} ${cls.name}</span>`:""}
+                  ${p.note?`<div class="note">${p.note}</div>`:""}
                 </div>
-                <button class="del" data-del="${p.id}">🗑️</button>
+                <button class="del" data-del="${p.id}">✕</button>
               </div>`;
             }).join("")}
           </div>
         </div>`;
       }).join("");
     }
-
   }
-
-  // ── compute year tabs outside of else block ──
-  const allYearTabs=[...new Set(photos.map(p=>p.date?.split("-")[0]).filter(Boolean))].sort((a,b)=>b-a);
-  const resolvedYear=activeYear||allYearTabs[0]||null;
 
   const classTabsHtml=hasClasses&&groupMode==="class"?`<div class="class-bar">
     ${ranges.map(r=>`<button class="class-tab ${r.key} ${r.key===activeClass?"active":""}" data-cls="${r.key}">${r.icon} ${r.name}</button>`).join("")}
-    ${photos.filter(p=>!getClassForDate(p.date)).length?`<button class="class-tab ${activeClass==="_other"?"active":""}" data-cls="_other">📁 其他</button>`:""}
   </div>`:"";
-
-  const yearTabsHtml=groupMode==="year"&&allYearTabs.length?`<div class="tab-bar">${allYearTabs.map(y=>`<button class="tab-btn ${String(y)===String(resolvedYear)?"active":""}" data-year="${y}">${y}年</button>`).join("")}</div>`:"";
+  const yearTabsHtml=groupMode==="year"&&allYearTabs.length?`<div class="tab-bar">${allYearTabs.map(y=>`<button class="tab-btn ${String(y)===String(resolvedYear)?"active":""}" data-year="${y}">${y}</button>`).join("")}</div>`:"";
 
   return`<div id="gallery-page" style="display:flex;flex-direction:column;height:100dvh;overflow:hidden">
     <div class="topbar">
-      <div class="topbar-title">🌸 宝贝成长相册</div>
+      <div class="topbar-logo">
+        <div class="t1">满满成长相册</div>
+        <div class="t2">${loading?"同步中…":`${photos.length} 张 · 今年 ${thisYearDays} 天`}</div>
+      </div>
       <div class="topbar-right">
-        ${state.canUpload ? `<button class="pill" onclick="setState({view:'bulk'})">📦 导入</button>` : ""}
-
-        <div class="pill" style="cursor:default">${loading?"…":`${photos.length}张`}</div>
+        ${state.canUpload?`<button class="icon-btn" onclick="setState({view:'bulk'})" title="批量导入">📦</button>`:""}
       </div>
     </div>
-
     ${hasClasses?`<div class="view-toggle">
-      <button class="vtab ${groupMode==="class"?"active":""}" onclick="switchMode('class')">🎓 按班级</button>
-      <button class="vtab ${groupMode==="year"?"active":""}" onclick="switchMode('year')">📅 按年份</button>
+      <button class="vtab ${groupMode==="class"?"active":""}" onclick="switchMode('class')">按班级</button>
+      <button class="vtab ${groupMode==="year"?"active":""}" onclick="switchMode('year')">按年份</button>
     </div>`:""}
-
-    ${classTabsHtml}
-    ${yearTabsHtml}
-
-    <div class="content" id="gallery-content">${content}</div>
-    ${state.canUpload ? `<button class="fab" onclick="setState({drawerOpen:true})">+</button>` : `<button class="fab" onclick="promptUploadPassword()" title="上传照片（需要密码）" style="background:linear-gradient(135deg,#ccc,#aaa);box-shadow:none">🔒</button>`}
+    ${classTabsHtml}${yearTabsHtml}
+    <div class="content">${content}</div>
+    ${state.canUpload
+      ? `<button class="fab" onclick="setState({drawerOpen:true})">+</button>`
+      : `<button class="fab locked" onclick="promptUploadPassword()">🔒</button>`}
     ${state.drawerOpen?renderDrawer():""}
     ${state.lightbox?renderLightbox():""}
   </div>`;
@@ -637,18 +758,18 @@ function renderDrawer(){
   return`<div class="overlay" id="overlay"></div>
   <div class="drawer">
     <div class="drawer-handle"></div>
-    <div class="drawer-title">📷 添加照片</div>
-    ${cls?`<div class="class-hint" style="background:${cls.color}18;color:${cls.color}">${cls.icon} ${cls.name} · ${fmtFull(formDate)}</div>`:""}
+    <div class="drawer-title">添加照片</div>
+    ${cls?`<div class="class-hint" style="background:${cls.color}14;color:${cls.color}">${cls.icon} ${cls.name} · ${fmtFull(formDate)}</div>`:""}
     <div class="form-row">
-      <div class="form-group"><label>📅 日期</label><input type="date" id="fd-date" value="${formDate}"></div>
-      <div class="form-group"><label>💬 备注</label><input type="text" id="fd-note" placeholder="今天很开心～" value="${formNote}"></div>
+      <div class="form-group"><label>日期</label><input type="date" id="fd-date" value="${formDate}"></div>
+      <div class="form-group"><label>备注</label><input type="text" id="fd-note" placeholder="今天很开心～" value="${formNote}"></div>
     </div>
     <div class="media-btns">
       <label class="media-btn"><input type="file" accept="image/*" capture="environment" id="cam-input"><span class="ico">📷</span><span>拍照</span></label>
       <label class="media-btn"><input type="file" accept="image/*" multiple id="gal-input"><span class="ico">🖼️</span><span>相册</span></label>
     </div>
     ${previews.length?`<div class="preview-strip">${previews.map(p=>`<img src="${p.dataUrl}">`).join("")}</div>`:""}
-    <button class="btn-save" id="btn-save" ${saving?"disabled":""}>${saving?"⏳ 上传中…":`✨ 保存${previews.length?` ${previews.length} 张`:""}`}</button>
+    <button class="btn-save" id="btn-save" ${saving?"disabled":""}>${saving?"上传中…":`保存${previews.length?` ${previews.length} 张`:""}`}</button>
   </div>`;
 }
 
@@ -659,20 +780,16 @@ function renderLightbox(){
     <button class="lb-close" id="lb-close">✕</button>
     <img src="${p.url}" alt="">
     <div class="lb-info">
-      <div class="lb-date">📅 ${fmtFull(p.date)}</div>
+      <div class="lb-date">${fmtFull(p.date)}</div>
       ${cls?`<div class="lb-cls" style="color:${cls.color}">${cls.icon} ${cls.name}</div>`:""}
-      ${p.note?`<div class="lb-note">💬 ${p.note}</div>`:""}
+      ${p.note?`<div class="lb-note">${p.note}</div>`:""}
     </div>
   </div>`;
 }
 
 function bindGallery(){
-  document.querySelectorAll(".class-tab").forEach(b=>{
-    b.onclick=()=>setState({activeClass:b.dataset.cls});
-  });
-  document.querySelectorAll(".tab-btn").forEach(b=>{
-    b.onclick=()=>setState({activeYear:b.dataset.year});
-  });
+  document.querySelectorAll(".class-tab").forEach(b=>{b.onclick=()=>setState({activeClass:b.dataset.cls});});
+  document.querySelectorAll(".tab-btn").forEach(b=>{b.onclick=()=>setState({activeYear:b.dataset.year});});
   document.querySelectorAll(".card").forEach(c=>{
     c.onclick=e=>{if(e.target.dataset.del)return;const p=state.photos.find(x=>x.id===c.dataset.id);if(p)setState({lightbox:p});};
   });
@@ -691,13 +808,10 @@ function bindGallery(){
 async function handleSingleFiles(e){
   const files=Array.from(e.target.files).filter(f=>f.type.startsWith("image/"));
   const items=await Promise.all(files.map(async f=>{
-    // Try EXIF first, then the ORIGINAL file.name (may be sanitized by OS)
     const[dataUrl, exifDate]=await Promise.all([toDataUrl(f), extractExifDate(f)]);
     let date=null, src="none";
     if(exifDate){date=exifDate;src="exif";}
     else{
-      // On mobile, file.name is often sanitized to "image.jpg"
-      // We expose the real name via webkitRelativePath or name
       const realName=f.name||"";
       const fnDate=extractDateFromFilename(realName);
       if(fnDate){date=fnDate;src="filename";}
@@ -711,30 +825,21 @@ async function handleSingleFiles(e){
     }
     return{file:f,dataUrl,detectedDate:date,detectedSrc:src,originalName:f.name};
   }));
-
   const detected=items.filter(x=>x.detectedDate);
   if(detected.length>0){
-    // Use the first detected date as the form date
     state.formDate=detected[0].detectedDate;
-    const srcLabel={exif:"EXIF拍摄时间",filename:"文件名",modified:"文件修改时间"}[detected[0].detectedSrc]||"";
-    showToast("📅 自动识别："+detected[0].detectedDate+(srcLabel?" ("+srcLabel+")":""),3500);
+    showToast("📅 识别日期："+detected[0].detectedDate,3000);
   } else {
-    // No date detected — show warning, clear date so user must fill manually
-    showToast("⚠️ 未识别到日期，请手动选择",3500);
-    // Keep existing formDate so user sees current value
+    showToast("⚠️ 未识别到日期，请手动选择",3000);
   }
   setState({previews:[...state.previews,...items]});
-  setTimeout(()=>{
-    const inp=document.getElementById("fd-date");
-    if(inp) inp.value=state.formDate||"";
-  },30);
+  setTimeout(()=>{const inp=document.getElementById("fd-date");if(inp)inp.value=state.formDate||"";},30);
   e.target.value="";
 }
 
 async function handleSingleSave(){
-  if(!state.previews.length){showToast("请先选择照片 📷");return;}
+  if(!state.previews.length){showToast("请先选择照片");return;}
   const existingDates=new Set(state.photos.map(p=>p.date));
-  // Check for duplicates
   const dupes=state.previews.filter(pv=>{const d=pv.detectedDate||state.formDate;return d&&existingDates.has(d);});
   if(dupes.length>0){
     const dates=dupes.map(pv=>pv.detectedDate||state.formDate).join("、");
@@ -748,13 +853,13 @@ async function handleSingleSave(){
   try{
     for(const pv of state.previews){
       const date=pv.detectedDate||state.formDate;
-      if(!date){showToast("请填写日期 📅");setState({saving:false});return;}
+      if(!date){showToast("请填写日期");setState({saving:false});return;}
       const photo=await uploadPhoto(pv.file,date,state.formNote);
       newPhotos.push(photo);
     }
     const all=[...state.photos,...newPhotos].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
     saveLocalIndex(all);
-    showToast(`🎉 已上传 ${newPhotos.length} 张！`);
+    showToast(`已上传 ${newPhotos.length} 张`);
     const cls=getClassForDate(newPhotos[0]?.date||state.formDate);
     setState({photos:all,activeClass:cls?cls.key:state.activeClass,previews:[],formNote:"",drawerOpen:false,saving:false});
   }catch(err){showToast("❌ "+err.message);setState({saving:false});}
@@ -773,28 +878,28 @@ function renderBulk(){
   const{bulkItems,bulkScanning,bulkSaving,bulkProgress,fillDate}=state;
   const noDate=bulkItems.filter(x=>!x.date).length;
   const ready=bulkItems.filter(x=>x.date).length;
-  const srcColors={exif:["EXIF","#4CAF50"],filename:["文件名","#2196F3"],modified:["修改时间","#FF9800"],none:["未识别","#F44336"]};
+  const srcColors={exif:["EXIF","#4CAF50"],filename:["文件名","#5D8CAE"],modified:["修改时间","#D4834A"],none:["未识别","#CC6666"]};
 
   let body="";
-  if(bulkScanning){body=`<div class="empty"><div class="ico spin">🌸</div><p>正在扫描文件…</p></div>`;}
-  else if(bulkSaving){body=`<div class="progress-wrap"><div style="font-size:2.5rem;margin-bottom:16px">💾</div><p style="font-weight:800;margin-bottom:12px">正在上传照片…</p><div class="progress-bar-bg"><div class="progress-bar" style="width:${bulkProgress}%"></div></div><p style="color:var(--text2);font-weight:700;margin-top:8px">${bulkProgress}%</p></div>`;}
-  else if(!bulkItems.length){body=`<div style="text-align:center;padding:40px 16px 20px">
-    <div style="font-size:3rem;margin-bottom:12px">📂</div>
-    <p style="font-weight:800;font-size:1.05rem;margin-bottom:6px">选择要导入的照片</p>
-    <p style="font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:24px">支持一次选择 200+ 张<br>自动从 <b>EXIF / 文件名</b> 识别日期，自动归入对应班级</p>
-    <label style="display:inline-flex;align-items:center;gap:8px;padding:16px 28px;background:linear-gradient(135deg,var(--rose),var(--rose2));color:#fff;border-radius:16px;cursor:pointer;box-shadow:0 4px 16px rgba(255,123,172,.4);font-weight:800;font-size:1rem">
-      <input type="file" accept="image/*" multiple id="bulk-input" style="display:none">🖼️ 选择所有照片
+  if(bulkScanning){body=`<div class="empty"><div class="ico spin" style="font-size:2rem">🌸</div><p>正在扫描…</p></div>`;}
+  else if(bulkSaving){body=`<div class="progress-wrap"><div style="font-size:2rem;margin-bottom:16px">📤</div><p style="font-weight:600;font-size:.95rem;color:var(--ink2);margin-bottom:16px">正在上传照片</p><div class="progress-bar-bg"><div class="progress-bar" style="width:${bulkProgress}%"></div></div><p style="color:var(--stone);font-weight:500;font-size:.82rem;margin-top:8px">${bulkProgress}%</p></div>`;}
+  else if(!bulkItems.length){body=`<div style="text-align:center;padding:50px 16px 20px">
+    <div style="font-size:2.5rem;margin-bottom:14px">📂</div>
+    <p style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--ink);margin-bottom:6px">选择要导入的照片</p>
+    <p style="font-size:.82rem;color:var(--stone);line-height:1.7;margin-bottom:24px">支持一次选择 200+ 张<br>自动从文件名识别日期</p>
+    <label style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--terra);color:#fff;border-radius:12px;cursor:pointer;font-weight:600;font-size:.9rem;letter-spacing:.3px">
+      <input type="file" accept="image/*" multiple id="bulk-input" style="display:none">选择所有照片
     </label>
   </div>`;}
   else{
-    const fillBar=noDate>0?`<div class="fill-bar"><span>⚠️ ${noDate} 张未识别到日期</span><input type="date" id="fill-date" value="${fillDate}"><button onclick="applyFillDate()">批量填入</button></div>`:"";
+    const fillBar=noDate>0?`<div class="fill-bar"><span>⚠️ ${noDate} 张未识别日期</span><input type="date" id="fill-date" value="${fillDate}"><button onclick="applyFillDate()">批量填入</button></div>`:"";
     const items=bulkItems.map(item=>{
       const[srcLabel,srcColor]=srcColors[item.dateSrc]||["?","#999"];
       const cls=item.date?getClassForDate(item.date):null;
       return`<div class="bulk-item">
         <img src="${item.dataUrl}" alt="">
         <div class="meta">
-          <div class="fname">${item.file.name}<span class="src-badge" style="background:${srcColor}22;color:${srcColor};border:1px solid ${srcColor}44">${srcLabel}</span>${cls?`<span style="font-size:.6rem;font-weight:800;margin-left:4px;color:${cls.color}">${cls.icon}${cls.name}</span>`:""}</div>
+          <div class="fname">${item.file.name}<span class="src-badge" style="background:${srcColor}18;color:${srcColor}">${srcLabel}</span>${cls?`<span style="font-size:.6rem;font-weight:600;margin-left:4px;color:${cls.color}">${cls.icon}${cls.name}</span>`:""}</div>
           <div class="fields">
             <input type="date" class="bi-date ${item.date?"":"missing"}" data-bid="${item.tempId}" value="${item.date||""}">
             <input type="text" class="bi-note" data-bid="${item.tempId}" value="${item.note||""}" placeholder="备注">
@@ -808,16 +913,18 @@ function renderBulk(){
 
   return`<div class="page">
     <div class="topbar">
-      <button onclick="gotoGallery()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">←</button>
-      <div class="topbar-title" style="flex:1;margin-left:12px">📦 批量导入</div>
-      ${bulkItems.length?`<div class="pill" style="cursor:default">${bulkItems.length}张</div>`:""}
+      <button onclick="gotoGallery()" class="icon-btn">←</button>
+      <div class="topbar-logo" style="margin-left:12px;flex:1">
+        <div class="t1" style="font-size:1rem">批量导入</div>
+        ${bulkItems.length?`<div class="t2">${bulkItems.length} 张照片</div>`:""}
+      </div>
     </div>
     <div class="bulk-list">${body}</div>
     ${bulkItems.length&&!bulkSaving?`<div class="bottom-bar">
-      <div class="info"><b>${ready}</b> 张已就绪${noDate?` · <span class="warn">${noDate} 张缺日期</span>`:""}<br><span style="font-size:.72rem;opacity:.7">缺日期的照片将被跳过</span></div>
-      <button class="btn-save" style="flex:0 0 auto;width:auto;padding:13px 22px" onclick="handleBulkSave()">✨ 确认上传</button>
+      <div class="info"><b>${ready}</b> 张已就绪${noDate?` · <span class="warn">${noDate} 张缺日期</span>`:""}</div>
+      <button class="btn-save" style="flex:0 0 auto;width:auto;padding:13px 24px" onclick="handleBulkSave()">确认上传</button>
     </div>
-    <label style="position:fixed;bottom:80px;right:20px;width:44px;height:44px;background:#fff;border:2px solid var(--blush);border-radius:50%;cursor:pointer;box-shadow:0 3px 12px rgba(255,123,172,.25);font-size:1.1rem;display:flex;align-items:center;justify-content:center">
+    <label style="position:fixed;bottom:80px;right:20px;width:42px;height:42px;background:var(--white);border:1.5px solid var(--sand2);border-radius:50%;cursor:pointer;box-shadow:0 2px 10px var(--shadow);font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--stone)">
       <input type="file" accept="image/*" multiple id="bulk-add" style="display:none">＋
     </label>`:""}
   </div>`;
@@ -853,7 +960,7 @@ async function handleBulkFiles(e){
   const detected=result.filter(x=>x.date).length;
   state.bulkItems=[...state.bulkItems,...result];
   setState({bulkScanning:false});
-  showToast(`📋 扫描 ${result.length} 张，${detected} 张识别到日期`,4000);
+  showToast(`扫描 ${result.length} 张，${detected} 张识别到日期`,4000);
 }
 
 window.applyFillDate=function(){
@@ -868,15 +975,14 @@ window.handleBulkSave=async function(){
   const existingDates=new Set(state.photos.map(p=>p.date));
   const allWithDate=state.bulkItems.filter(x=>x.date);
   const skip=state.bulkItems.filter(x=>!x.date).length;
-  // Filter out duplicates
   const dupes=allWithDate.filter(x=>existingDates.has(x.date));
   const toSave=allWithDate.filter(x=>!existingDates.has(x.date));
   if(dupes.length>0){
-    const msg=`以下日期已有照片，将自动跳过：\n${dupes.map(x=>x.date).join("、")}`;
+    const msg=`以下日期已有照片，将跳过：\n${dupes.map(x=>x.date).join("、")}`;
     if(!confirm(msg+"\n\n继续上传剩余 "+toSave.length+" 张吗？"))return;
   }
-  if(!toSave.length){showToast("所有照片日期都已存在，无需重复上传");return;}
-  if(skip>0&&!confirm(`另有 ${skip} 张没有填写日期，将跳过。\n确认上传 ${toSave.length} 张？`))return;
+  if(!toSave.length){showToast("所有照片日期都已存在");return;}
+  if(skip>0&&!confirm(`另有 ${skip} 张没有日期，将跳过。\n确认上传 ${toSave.length} 张？`))return;
   setState({bulkSaving:true,bulkProgress:0});
   const newPhotos=[];
   try{
@@ -888,7 +994,7 @@ window.handleBulkSave=async function(){
     }
     const all=[...state.photos,...newPhotos].sort((a,b)=>(b.date||"").localeCompare(a.date||""));
     saveLocalIndex(all);
-    showToast(`🎉 成功上传 ${newPhotos.length} 张${dupes.length?`，跳过 ${dupes.length} 张重复`:""}！`,4000);
+    showToast(`成功上传 ${newPhotos.length} 张${dupes.length?`，跳过 ${dupes.length} 张重复`:""}`,4000);
     setState({photos:all,bulkItems:[],bulkSaving:false,bulkProgress:0,view:"gallery"});
   }catch(err){showToast("❌ "+err.message);setState({bulkSaving:false});}
 };
@@ -898,7 +1004,6 @@ window.gotoGallery=function(){if(state.bulkSaving)return;setState({view:"gallery
 // ══════════════════════════════════════
 // BOOT
 // ══════════════════════════════════════
-// Config is hardcoded, always go straight to gallery
 loadPhotos();
 </script>
 </body>
