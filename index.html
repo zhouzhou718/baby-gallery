@@ -17,8 +17,8 @@ const CONFIG = {
   uploadPassword: "manman718",
 };
 // token 分段存储避免被检测
-const _t = ["ghp_", "GNc5VWR89lpXRAvBDXoy", "awctga7ONO1ix16h"];
-CONFIG.githubToken = _t.join("");
+CONFIG.jsonbinId  = "69ae41f643b1c97be9c3236e";
+CONFIG.jsonbinKey = "$2a$10$1DhZoNloCnVf/xnnq57qhunk1h1eh5rsWJ1arFu8wVXmGZeiDmJsa";
 </script>
 <style>
 :root {
@@ -433,9 +433,8 @@ function getConfig(){
     cloudName:    saved.cloudName    || hardcoded.cloudName    || "",
     uploadPreset: saved.uploadPreset || hardcoded.uploadPreset || "",
     indexFolder:  saved.indexFolder  || hardcoded.indexFolder  || "baby_gallery",
-    githubUser:   saved.githubUser   || hardcoded.githubUser   || "zhouzhou718",
-    githubRepo:   saved.githubRepo   || hardcoded.githubRepo   || "baby-gallery",
-    githubToken:  saved.githubToken  || hardcoded.githubToken  || "",
+    jsonbinId:    saved.jsonbinId    || hardcoded.jsonbinId    || "",
+    jsonbinKey:   saved.jsonbinKey   || hardcoded.jsonbinKey   || "",
   };
 }
 function isConfigured(){const c=getConfig();return c.cloudName&&c.cloudName!=="YOUR_CLOUD_NAME"&&c.uploadPreset&&c.uploadPreset!=="YOUR_UPLOAD_PRESET";}
@@ -480,7 +479,7 @@ async function loadPhotos(){
     }
   }catch{}
   try{
-    const fresh=await fetchFromGitHub();
+    const fresh=await fetchFromJSONBin();
     if(fresh&&fresh.length){
       fresh.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
       saveLocalIndex(fresh);
@@ -503,30 +502,29 @@ function resolveActiveClass(photos){
   return activeClass;
 }
 
-const GH_API = "https://api.github.com";
-async function fetchFromGitHub(){
-  const url=`https://zhouzhou718.github.io/baby-gallery/photos.json?_=${Date.now()}`;
-  const r=await fetch(url);
-  if(!r.ok) return [];
-  return await r.json();
-}
-async function saveIndexToGitHub(photos){
+async function fetchFromJSONBin(){
   const cfg=getConfig();
-  if(!cfg.githubToken||cfg.githubToken==="YOUR_GITHUB_TOKEN") return;
-  const path="photos.json";
-  const apiUrl=`${GH_API}/repos/zhouzhou718/baby-gallery/contents/${path}`;
-  let sha="";
-  try{
-    const r=await fetch(apiUrl,{headers:{Authorization:`token ${cfg.githubToken}`,"Accept":"application/vnd.github.v3+json"}});
-    if(r.ok){const d=await r.json();sha=d.sha||"";}
-  }catch{}
-  const body={message:"update photos index",content:btoa(unescape(encodeURIComponent(JSON.stringify(photos,null,2))))};
-  if(sha) body.sha=sha;
-  await fetch(apiUrl,{method:"PUT",headers:{Authorization:`token ${cfg.githubToken}`,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"},body:JSON.stringify(body)});
+  const r=await fetch(`https://api.jsonbin.io/v3/b/${cfg.jsonbinId}/latest`,{
+    headers:{"X-Master-Key":cfg.jsonbinKey,"X-Bin-Meta":"false"}
+  });
+  if(!r.ok) return [];
+  const data=await r.json();
+  if(Array.isArray(data)) return data.filter(p=>p.date);
+  return [];
+}
+async function saveIndexToJSONBin(photos){
+  const cfg=getConfig();
+  if(!cfg.jsonbinId||!cfg.jsonbinKey) return;
+  const r=await fetch(`https://api.jsonbin.io/v3/b/${cfg.jsonbinId}`,{
+    method:"PUT",
+    headers:{"Content-Type":"application/json","X-Master-Key":cfg.jsonbinKey},
+    body:JSON.stringify(photos)
+  });
+  if(!r.ok) throw new Error("JSONBin save failed: "+r.status);
 }
 function saveLocalIndex(photos){
   localStorage.setItem("gallery_photos",JSON.stringify(photos));
-  saveIndexToGitHub(photos).catch(e=>console.warn("GitHub save failed:",e));
+  saveIndexToJSONBin(photos).catch(e=>console.warn("JSONBin save failed:",e));
 }
 
 async function uploadPhoto(file,date,note){
